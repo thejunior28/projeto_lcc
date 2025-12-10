@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta property="og:title" content="Certificado Validado - Let's CoCreate" />
+    <meta
+      property="og:description"
+      content="Verifique a autenticidade deste certificado registrado em Blockchain."
+    />
+    <meta
+      property="og:image"
+      content="https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibvorvy2rgaz5ge7iunxix4wapcul5tndnc4pqvelfj56adzskxai"
+    />
+
+    <title>Validação Pública | Let's CoCreate</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.2/ethers.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #22d3ee;
+        --dark: #000000;
+        --card-bg: #111111;
+        --border: #333333;
+        --text: #f8fafc;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--dark);
+        color: var(--text);
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        background: var(--card-bg);
+        padding: 40px;
+        border-radius: 24px;
+        box-shadow: 0 0 50px rgba(34, 211, 238, 0.05);
+        border: 1px solid var(--border);
+        height: fit-content;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 20px;
+      }
+      .header-logo {
+        width: 80px;
+        height: auto;
+        margin-bottom: 12px;
+        border-radius: 12px;
+      }
+      .header h1 {
+        margin: 0;
+        color: var(--text);
+        font-size: 22px;
+        font-weight: 800;
+      }
+      .header p {
+        color: #94a3b8;
+        font-size: 13px;
+        margin-top: 6px;
+      }
+
+      .search-box {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+      input {
+        flex: 1;
+        padding: 14px;
+        background: #000;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        font-size: 16px;
+        color: white;
+        outline: none;
+        transition: 0.3s;
+      }
+      input:focus {
+        border-color: var(--primary);
+      }
+      button {
+        padding: 14px 24px;
+        background: var(--primary);
+        color: black;
+        border: none;
+        border-radius: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      button:hover {
+        transform: translateY(-2px);
+      }
+
+      #resultArea {
+        display: none;
+        animation: fadeIn 0.6s;
+      }
+      .diploma-card {
+        border: 1px solid var(--border);
+        padding: 30px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.02);
+        text-align: center;
+      }
+      .valid-badge {
+        background: rgba(16, 185, 129, 0.1);
+        color: #6ee7b7;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+      .diploma-img {
+        width: 100%;
+        max-width: 450px;
+        border-radius: 8px;
+        border: 4px solid #222;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .info-grid {
+        text-align: left;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+      }
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 14px;
+        border-bottom: 1px solid #222;
+        padding-bottom: 8px;
+      }
+      .label {
+        color: #94a3b8;
+      }
+      .value {
+        color: white;
+        font-weight: 600;
+        text-align: right;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 25px;
+      }
+      .btn-action {
+        text-decoration: none;
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: white;
+        border: 1px solid transparent;
+        transition: 0.2s;
+        cursor: pointer;
+      }
+
+      .btn-pdf {
+        background: #ef4444;
+        grid-column: span 2;
+      }
+      .btn-opensea {
+        background: #2081e2;
+      }
+      .btn-etherscan {
+        background: transparent;
+        border-color: var(--border);
+      }
+      .btn-etherscan:hover {
+        background: #222;
+      }
+
+      /* BOTÕES SOCIAIS */
+      .social-share {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        grid-column: span 2;
+      }
+      .btn-social {
+        flex: 1;
+        padding: 12px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.2s;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-social:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.1);
+      }
+
+      .btn-wa {
+        background: #25d366;
+      }
+      .btn-li {
+        background: #0077b5;
+      }
+      .btn-x {
+        background: #000000;
+        border: 1px solid #333;
+      }
+
+      .loading-btn {
+        opacity: 0.7;
+        pointer-events: none;
+        cursor: wait;
+      }
+      #qrcode {
+        background: white;
+        padding: 10px;
+        border-radius: 12px;
+        margin: 25px auto;
+        width: fit-content;
+      }
+      .skeleton {
+        background: linear-gradient(90deg, #111 25%, #222 50%, #111 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 8px;
+        height: 20px;
+        margin-bottom: 10px;
+      }
+
+      .footer-note {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 11px;
+        color: #475569;
+      }
+      .footer-note a {
+        color: #64748b;
+        text-decoration: none;
+      }
+
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img
+          id="headerLogoImg"
+          class="header-logo"
+          src=""
+          alt="Let's CoCreate"
+        />
+        <h1>Verificação de Certificados</h1>
+        <p>Oficial SBToken Acadêmico</p>
+      </div>
+
+      <div class="search-box">
+        <input type="number" id="diplomaId" placeholder="ID do Diploma" />
+        <button onclick="buscarDiploma()">Verificar</button>
+      </div>
+
+      <div id="loading" style="display: none; padding: 20px">
+        <div class="skeleton" style="height: 200px; margin-bottom: 20px"></div>
+        <div class="skeleton" style="width: 60%"></div>
+        <div class="skeleton" style="width: 80%"></div>
+      </div>
+
+      <div
+        id="status"
+        style="
+          text-align: center;
+          color: #fca5a5;
+          margin-bottom: 15px;
+          display: none;
+        "
+      ></div>
+
+      <div id="resultArea">
+        <div class="diploma-card">
+          <div class="valid-badge">✅ CERTIFICADO VÁLIDO</div>
+
+          <img
+            id="resImagem"
+            class="diploma-img"
+            src=""
+            alt="Diploma"
+            crossorigin="anonymous"
+          />
+
+          <h2 id="resNome" style="color: white; margin: 0 0 5px 0">-</h2>
+          <p
+            id="resCurso"
+            style="color: var(--primary); font-weight: bold; margin: 0 0 20px 0"
+          >
+            -
+          </p>
+
+          <div class="info-grid">
+            <div class="info-row">
+              <span class="label">Instituição</span>
+              <span class="value">Let's CoCreate</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Conclusão</span>
+              <span class="value" id="resData">-</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Owner</span>
+              <span
+                class="value"
+                id="resOwner"
+                style="font-family: monospace; font-size: 12px"
+                >-</span
+              >
+            </div>
+          </div>
+
+          <div id="qrcode"></div>
+
+          <div class="actions">
+            <button
+              id="btnPdf"
+              onclick="downloadPDF()"
+              class="btn-action btn-pdf"
+            >
+              📄 Baixar PDF
+            </button>
+
+            <div class="social-share">
+              <button
+                onclick="compartilharSocial('whatsapp')"
+                class="btn-social btn-wa"
+              >
+                WhatsApp
+              </button>
+              <button
+                onclick="compartilharSocial('linkedin')"
+                class="btn-social btn-li"
+              >
+                LinkedIn
+              </button>
+              <button
+                onclick="compartilharSocial('x')"
+                class="btn-social btn-x"
+              >
+                X
+              </button>
+            </div>
+
+            <a
+              id="linkOpenSea"
+              href="#"
+              target="_blank"
+              class="btn-action btn-opensea"
+              >🌊 OpenSea</a
+            >
+            <a
+              id="linkEtherscan"
+              href="#"
+              target="_blank"
+              class="btn-action btn-etherscan"
+              >⛓️ Etherscan</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        Tecnologia
+        <a href="https://www.letscocreate.com.br/" target="_blank"
+          >Let's CoCreate</a
+        >
+        (conforme Portaria MEC nº 70/2025)
+      </div>
+    </div>
+
+    <script>
+      // === CONFIGURAÇÕES ===
+      const LOGO_URL =
+        "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibvorvy2rgaz5ge7iunxix4wapcul5tndnc4pqvelfj56adzskxai";
+      const contractAddress = "0xF474799848eA20A4fDFff3164DbA18645DAB487f";
+
+      document.getElementById("headerLogoImg").src = LOGO_URL;
+
+      const abi = [
+        "function tokenURI(uint256 tokenId) view returns (string)",
+        "function ownerOf(uint256 tokenId) view returns (address)",
+      ];
+      let currentData = {};
+
+      window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("id")) {
+          document.getElementById("diplomaId").value = params.get("id");
+          buscarDiploma();
+        }
+      };
+
+      async function buscarDiploma() {
+        const id = document.getElementById("diplomaId").value;
+        if (!id) return alert("Digite um ID");
+
+        document.getElementById("status").style.display = "none";
+        document.getElementById("resultArea").style.display = "none";
+        document.getElementById("loading").style.display = "block";
+
+        try {
+          const provider = new ethers.JsonRpcProvider(
+            "https://ethereum-sepolia.publicnode.com"
+          );
+          const contract = new ethers.Contract(contractAddress, abi, provider);
+
+          const owner = await contract.ownerOf(id);
+          let tokenUri = await contract.tokenURI(id);
+          let httpUri = tokenUri.replace("ipfs://", "https://ipfs.io/ipfs/");
+
+          const response = await fetch(httpUri);
+          const metadata = await response.json();
+
+          let nome = metadata.name.includes("-")
+            ? metadata.name.split("-")[1].trim()
+            : metadata.name;
+          const getAttr = (k) =>
+            metadata.attributes?.find((a) => a.trait_type === k)?.value || "-";
+
+          document.getElementById("resNome").innerText = nome;
+          document.getElementById("resCurso").innerText = getAttr("Curso");
+          document.getElementById("resData").innerText =
+            getAttr("Data") || getAttr("Data de Conclusão");
+          document.getElementById("resOwner").innerText = owner;
+
+          const imgUrl = metadata.image.replace(
+            "ipfs://",
+            "https://ipfs.io/ipfs/"
+          );
+          document.getElementById("resImagem").src = imgUrl;
+
+          document.getElementById(
+            "linkOpenSea"
+          ).href = `https://testnets.opensea.io/assets/sepolia/${contractAddress}/${id}`;
+          document.getElementById(
+            "linkEtherscan"
+          ).href = `https://sepolia.etherscan.io/token/${contractAddress}?a=${id}`;
+
+          document.getElementById("qrcode").innerHTML = "";
+          new QRCode(document.getElementById("qrcode"), {
+            text: window.location.href.split("?")[0] + "?id=" + id,
+            width: 100,
+            height: 100,
+          });
+
+          currentData = { id, imgUrl };
+
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("resultArea").style.display = "block";
+
+          confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        } catch (error) {
+          console.error(error);
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("status").style.display = "block";
+          document.getElementById("status").innerText =
+            "❌ Diploma não encontrado. Verifique o ID.";
+        }
+      }
+
+      // --- NOVA FUNÇÃO DE COMPARTILHAMENTO ---
+      function compartilharSocial(rede) {
+        // 1. Pega a URL limpa com o ID
+        const id = document.getElementById("diplomaId").value;
+        const pageUrl = window.location.href.split("?")[0] + "?id=" + id;
+
+        // 2. Mensagens
+        const texto =
+          "Confira meu certificado verificado em Blockchain pela Let's CoCreate! 🚀🎓";
+
+        let shareUrl = "";
+
+        if (rede === "whatsapp") {
+          // Usa api.whatsapp.com para funcionar melhor em Desktop e Mobile sem bloqueio
+          shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+            texto + " " + pageUrl
+          )}`;
+        } else if (rede === "linkedin") {
+          // Usa o endpoint de FEED para forçar o texto a aparecer na caixa de postagem
+          // O share-offsite padrão às vezes falha em ler metadados de ambientes de teste
+          shareUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(
+            texto + " " + pageUrl
+          )}`;
+        } else if (rede === "x") {
+          shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+            texto
+          )}&url=${encodeURIComponent(pageUrl)}`;
+        }
+
+        // Abre em nova aba
+        window.open(shareUrl, "_blank");
+      }
+
+      // --- GERADOR DE PDF ---
+      async function downloadPDF() {
+        const btn = document.getElementById("btnPdf");
+        btn.innerText = "⏳ Gerando PDF...";
+        btn.classList.add("loading-btn");
+
+        try {
+          const { jsPDF } = window.jspdf;
+          const doc = new jsPDF({
+            orientation: "landscape",
+            unit: "mm",
+            format: "a4",
+          });
+          const base64Img = await getBase64FromUrl(currentData.imgUrl);
+          doc.addImage(base64Img, "JPEG", 0, 0, 297, 210);
+          doc.save(`Certificado_LCC_${currentData.id}.pdf`);
+        } catch (e) {
+          alert("Erro ao baixar PDF: " + e.message);
+        } finally {
+          btn.innerText = "📄 Baixar PDF";
+          btn.classList.remove("loading-btn");
+        }
+      }
+
+      async function getBase64FromUrl(url) {
+        const data = await fetch(url, { mode: "cors" });
+        const blob = await data.blob();
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = () => resolve(reader.result);
+        });
+      }
+    </script>
+  </body>
+</html>
