@@ -32,6 +32,9 @@ Acesse o arquivo `index.html`. Conecte a carteira autorizada (Owner) e preencha 
 3. Mintar o token na rede Sepolia.
 
 ### 2. Validação (Público/Empregador)
-Acesse o arquivo `validar.html`. Digite o ID do diploma. O sistema irá:
+Acesse o arquivo `verificar.html`. Digite o ID do diploma. O sistema irá:
 1. Consultar a Blockchain para verificar a autenticidade.
+
 2. Exibir os dados oficiais e a representação visual.
+
+## Roadmap de Futuro: Migração para Arweave via Irys para persistência permanente
