@@ -8,7 +8,7 @@
 - **Smart Contract (Sepolia):** [Link para o Etherscan do seu contrato]
 
 ## 🛠 Tecnologias Utilizadas
-- **Blockchain:** Ethereum (Rede Sepolia)
+- **Blockchain:** Base (Rede Sepolia)
 - **Padrão de Token:** ERC-721 Soulbound (Intransferível)
 - [cite_start]**Armazenamento:** IPFS (via Pinata) para preservação assegurada de dados [cite: 24]
 - **Frontend:** HTML5, CSS3, Ethers.js v6
@@ -38,3 +38,4 @@ Acesse o arquivo `verificar.html`. Digite o ID do diploma. O sistema irá:
 2. Exibir os dados oficiais e a representação visual.
 
 ## Roadmap de Futuro: Migração para Arweave via Irys para persistência permanente
+
