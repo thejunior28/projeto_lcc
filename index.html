@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SciBound | Painel do Emissor</title>
+    <title>Painel do Emissor | Let's CoCreate</title>
 
     <link
       rel="stylesheet"
@@ -296,15 +296,18 @@
       } from "https://esm.sh/@web3modal/ethers@4.0.1";
       import { BrowserProvider, Contract } from "https://esm.sh/ethers@6.11.1";
 
-      // === 1. CONFIGURAÇÕES (DEFINIDAS NO INÍCIO) ===
-      const LOGO_URL =
-        "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
+      // === 1. CONFIGURAÇÕES GERAIS ===
+      const LOGO_URL = "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
+      
+      // Endereço do contrato na BASE SEPOLIA
       const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09";
-      const PINATA_JWT =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzMmQ0MjMzYS1iM2NiLTQ1OWYtOGJjOC1iYjYxOWNmMDIzNTgiLCJlbWFpbCI6InJpY2hhcmQuY2FzdHJvQHVuZXNwLmJyIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiRlJBMSJ9LHsiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiTllDMSJ9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjkwNjUxOGRkMDAzODQ4N2IwNTRkIiwic2NvcGVkS2V5U2VjcmV0IjoiMjMwNDcyNDEwY2M2NjcyMzJmZDIwMTBlNmVjNjM5NmQxMDZkNGY0NGQ2YmE0ZjVmOTgyZDA1MTM0Y2JmM2U4OCIsImV4cCI6MTc5NjU5MDQ3OH0.2kF3Bzdn2x4qWRI0FClWgJh96ud2jzgkMsitCu6gZX0";
-      const LINK_VERIFICADOR = "https://6zjnkn.csb.app/verificar.html";
+      
+      // Sua chave Pinata (Mantida conforme seu arquivo)
+      const PINATA_JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzMmQ0MjMzYS1iM2NiLTQ1OWYtOGJjOC1iYjYxOWNmMDIzNTgiLCJlbWFpbCI6InJpY2hhcmQuY2FzdHJvQHVuZXNwLmJyIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiRlJBMSJ9LHsiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiTllDMSJ9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjkwNjUxOGRkMDAzODQ4N2IwNTRkIiwic2NvcGVkS2V5U2VjcmV0IjoiMjMwNDcyNDEwY2M2NjcyMzJmZDIwMTBlNmVjNjM5NmQxMDZkNGY0NGQ2YmE0ZjVmOTgyZDA1MTM0Y2JmM2U4OCIsImV4cCI6MTc5NjU5MDQ3OH0.2kF3Bzdn2x4qWRI0FClWgJh96ud2jzgkMsitCu6gZX0";
+      
+      const LINK_VERIFICADOR = "https://scibound.netlify.app/verificar.html"; // Ajuste se seu link for diferente
 
-      const projectId = "ccaa314f20e97669bf6e926f17670656"; // Seu ID
+      const projectId = "ccaa314f20e97669bf6e926f17670656"; 
 
       const metadata = {
         name: "Emissor CoCreate",
@@ -313,7 +316,7 @@
         icons: [LOGO_URL],
       };
 
-      // Objeto da Rede Base Sepolia
+      // === 2. CONFIGURAÇÃO DA REDE BASE SEPOLIA ===
       const baseSepolia = {
         chainId: 84532, // ID da Base Testnet
         name: "Base Sepolia",
@@ -322,9 +325,10 @@
         rpcUrl: "https://sepolia.base.org",
       };
 
+      // Inicializa o Modal apenas com a Base Sepolia
       const modal = createWeb3Modal({
         ethersConfig: defaultConfig({ metadata }),
-        chains: [baseSepolia], // <--- Usando a testnet
+        chains: [baseSepolia], 
         projectId,
         enableAnalytics: true,
         themeVariables: {
@@ -338,17 +342,6 @@
       document.getElementById("codigoValidacao").value =
         "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
 
-      // === 2. INICIALIZAR WEB3MODAL ===
-      const modal = createWeb3Modal({
-        ethersConfig: defaultConfig({ metadata }),
-        chains: [sepolia],
-        projectId,
-        enableAnalytics: true,
-        themeVariables: {
-          "--w3m-accent": "#22d3ee",
-          "--w3m-border-radius-master": "1px",
-        },
-      });
 
       // === 3. MONITORAR CONEXÃO ===
       modal.subscribeProvider(async ({ address, isConnected }) => {
@@ -432,7 +425,7 @@
             ],
           };
 
-          // C. Upload Pinata
+          // C. Upload Pinata (Usando JWT direto para corrigir erro imediato)
           const res = await fetch(
             "https://api.pinata.cloud/pinning/pinJSONToIPFS",
             {
@@ -447,6 +440,9 @@
               }),
             }
           );
+          
+          if (!res.ok) throw new Error("Erro no Upload Pinata: " + res.statusText);
+
           const dataPinata = await res.json();
           const jsonUri = "ipfs://" + dataPinata.IpfsHash;
 
@@ -465,7 +461,7 @@
             "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
         } catch (e) {
           console.error(e);
-          notify(e.reason || e.message, "error");
+          notify(e.reason || e.message || "Erro desconhecido", "error");
         }
       }
 
