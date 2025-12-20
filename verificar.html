@@ -434,7 +434,7 @@
       // === CONFIGURAÇÕES ===
       const LOGO_URL =
         "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
-      const contractAddress = "0xF474799848eA20A4fDFff3164DbA18645DAB487f";
+      const contractAddress = "0xb541f256a930a662ac90ecca4968953babae294fc176360574d0e09314011a17";
 
       document.getElementById("headerLogoImg").src = LOGO_URL;
 
@@ -461,9 +461,7 @@
         document.getElementById("loading").style.display = "block";
 
         try {
-          const provider = new ethers.JsonRpcProvider(
-            "https://ethereum-sepolia.publicnode.com"
-          );
+          const provider = new ethers.JsonRpcProvider("https://sepolia.base.org");
           const contract = new ethers.Contract(contractAddress, abi, provider);
 
           const owner = await contract.ownerOf(id);
@@ -490,12 +488,13 @@
           );
           document.getElementById("resImagem").src = imgUrl;
 
-          document.getElementById(
-            "linkOpenSea"
-          ).href = `https://testnets.opensea.io/assets/sepolia/${contractAddress}/${id}`;
-          document.getElementById(
-            "linkEtherscan"
-          ).href = `https://sepolia.etherscan.io/token/${contractAddress}?a=${id}`;
+          // OpenSea de Teste (Base Sepolia)
+          document.getElementById("linkOpenSea").href = 
+            `https://testnets.opensea.io/assets/base-sepolia/${contractAddress}/${id}`;
+            
+          // BaseScan de Teste
+          document.getElementById("linkEtherscan").href = 
+            `https://sepolia.basescan.org/token/${contractAddress}?a=${id}`;
 
           document.getElementById("qrcode").innerHTML = "";
           new QRCode(document.getElementById("qrcode"), {
