@@ -199,12 +199,13 @@
       .btn-opensea {
         background: #2081e2;
       }
+      /* CORREÇÃO: Azul da Base Oficial (#0052ff) */
       .btn-etherscan {
-        background: transparent;
-        border-color: var(--border);
+        background: #0052ff;
+        color: white;
       }
       .btn-etherscan:hover {
-        background: #222;
+        filter: brightness(1.1);
       }
 
       /* BOTÕES SOCIAIS */
@@ -415,7 +416,7 @@
               href="#"
               target="_blank"
               class="btn-action btn-etherscan"
-              >⛓️ Etherscan</a
+              >⛓️ Explorer</a
             >
           </div>
         </div>
@@ -434,6 +435,8 @@
       // === CONFIGURAÇÕES ===
       const LOGO_URL =
         "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
+      
+      // ⚠️ IMPORTANTE: CONFIRA SE ESTE É O ENDEREÇO DA BASE MAINNET!
       const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09";
 
       document.getElementById("headerLogoImg").src = LOGO_URL;
@@ -461,8 +464,9 @@
         document.getElementById("loading").style.display = "block";
 
         try {
+          // CORREÇÃO: RPC Oficial da Base Mainnet
           const provider = new ethers.JsonRpcProvider(
-            "https://ethereum-sepolia.publicnode.com"
+            "https://mainnet.base.org"
           );
           const contract = new ethers.Contract(contractAddress, abi, provider);
 
@@ -490,12 +494,14 @@
           );
           document.getElementById("resImagem").src = imgUrl;
 
+          // CORREÇÃO: Links Oficiais para Mainnet
           document.getElementById(
             "linkOpenSea"
-          ).href = `https://testnets.opensea.io/assets/sepolia/${contractAddress}/${id}`;
+          ).href = `https://opensea.io/assets/base/${contractAddress}/${id}`;
+          
           document.getElementById(
             "linkEtherscan"
-          ).href = `https://sepolia.etherscan.io/token/${contractAddress}?a=${id}`;
+          ).href = `https://basescan.org/token/${contractAddress}?a=${id}`;
 
           document.getElementById("qrcode").innerHTML = "";
           new QRCode(document.getElementById("qrcode"), {
@@ -515,30 +521,24 @@
           document.getElementById("loading").style.display = "none";
           document.getElementById("status").style.display = "block";
           document.getElementById("status").innerText =
-            "❌ Diploma não encontrado. Verifique o ID.";
+            "❌ Diploma não encontrado ou não emitido na Base Mainnet.";
         }
       }
 
-      // --- NOVA FUNÇÃO DE COMPARTILHAMENTO ---
       function compartilharSocial(rede) {
-        // 1. Pega a URL limpa com o ID
         const id = document.getElementById("diplomaId").value;
         const pageUrl = window.location.href.split("?")[0] + "?id=" + id;
 
-        // 2. Mensagens
         const texto =
           "Confira meu certificado verificado em Blockchain pela Let's CoCreate! 🚀🎓";
 
         let shareUrl = "";
 
         if (rede === "whatsapp") {
-          // Usa api.whatsapp.com para funcionar melhor em Desktop e Mobile sem bloqueio
           shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
             texto + " " + pageUrl
           )}`;
         } else if (rede === "linkedin") {
-          // Usa o endpoint de FEED para forçar o texto a aparecer na caixa de postagem
-          // O share-offsite padrão às vezes falha em ler metadados de ambientes de teste
           shareUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(
             texto + " " + pageUrl
           )}`;
@@ -548,11 +548,9 @@
           )}&url=${encodeURIComponent(pageUrl)}`;
         }
 
-        // Abre em nova aba
         window.open(shareUrl, "_blank");
       }
 
-      // --- GERADOR DE PDF ---
       async function downloadPDF() {
         const btn = document.getElementById("btnPdf");
         btn.innerText = "⏳ Gerando PDF...";

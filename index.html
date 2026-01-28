@@ -299,12 +299,11 @@
       // === 1. CONFIGURAÇÕES (DEFINIDAS NO INÍCIO) ===
       const LOGO_URL =
         "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
+      
+      // ⚠️ IMPORTANTE: CONFIRA SE ESTE É O ENDEREÇO DA BASE MAINNET!
       const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09";
       
-      // *** REMOVIDO: PINATA_JWT não existe mais aqui! ***
-      // A chave agora está segura no servidor do Netlify.
-      
-      const LINK_VERIFICADOR = "https://6zjnkn.csb.app/verificar.html";
+      const LINK_VERIFICADOR = "https://scibound.netlify.app/verificar.html";
 
       const projectId = "ccaa314f20e97669bf6e926f17670656"; // Seu ID
 
@@ -315,12 +314,13 @@
         icons: [LOGO_URL],
       };
 
-      const sepolia = {
-        chainId: 11155111,
-        name: "Sepolia",
+      // === CONFIGURAÇÃO BASE MAINNET (OFICIAL) ===
+      const baseMainnet = {
+        chainId: 8453, // ID Oficial da Base
+        name: "Base",
         currency: "ETH",
-        explorerUrl: "https://sepolia.etherscan.io",
-        rpcUrl: "https://ethereum-sepolia.publicnode.com",
+        explorerUrl: "https://basescan.org",
+        rpcUrl: "https://mainnet.base.org",
       };
 
       // Configurar interface inicial
@@ -331,7 +331,7 @@
       // === 2. INICIALIZAR WEB3MODAL ===
       const modal = createWeb3Modal({
         ethersConfig: defaultConfig({ metadata }),
-        chains: [sepolia],
+        chains: [baseMainnet], // <--- USANDO BASE MAINNET
         projectId,
         enableAnalytics: true,
         themeVariables: {
