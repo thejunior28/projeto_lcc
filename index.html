@@ -296,18 +296,17 @@
       } from "https://esm.sh/@web3modal/ethers@4.0.1";
       import { BrowserProvider, Contract } from "https://esm.sh/ethers@6.11.1";
 
-      // === 1. CONFIGURAÇÕES GERAIS ===
-      const LOGO_URL = "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
-      
-      // Endereço do contrato na BASE SEPOLIA
+      // === 1. CONFIGURAÇÕES (DEFINIDAS NO INÍCIO) ===
+      const LOGO_URL =
+        "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
       const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09";
       
-      // Sua chave Pinata (Mantida conforme seu arquivo)
-      const PINATA_JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzMmQ0MjMzYS1iM2NiLTQ1OWYtOGJjOC1iYjYxOWNmMDIzNTgiLCJlbWFpbCI6InJpY2hhcmQuY2FzdHJvQHVuZXNwLmJyIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiRlJBMSJ9LHsiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjEsImlkIjoiTllDMSJ9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjkwNjUxOGRkMDAzODQ4N2IwNTRkIiwic2NvcGVkS2V5U2VjcmV0IjoiMjMwNDcyNDEwY2M2NjcyMzJmZDIwMTBlNmVjNjM5NmQxMDZkNGY0NGQ2YmE0ZjVmOTgyZDA1MTM0Y2JmM2U4OCIsImV4cCI6MTc5NjU5MDQ3OH0.2kF3Bzdn2x4qWRI0FClWgJh96ud2jzgkMsitCu6gZX0";
+      // *** REMOVIDO: PINATA_JWT não existe mais aqui! ***
+      // A chave agora está segura no servidor do Netlify.
       
-      const LINK_VERIFICADOR = "https://scibound.netlify.app/verificar.html"; // Ajuste se seu link for diferente
+      const LINK_VERIFICADOR = "https://6zjnkn.csb.app/verificar.html";
 
-      const projectId = "ccaa314f20e97669bf6e926f17670656"; 
+      const projectId = "ccaa314f20e97669bf6e926f17670656"; // Seu ID
 
       const metadata = {
         name: "Emissor CoCreate",
@@ -316,32 +315,30 @@
         icons: [LOGO_URL],
       };
 
-      // === 2. CONFIGURAÇÃO DA REDE BASE SEPOLIA ===
-      const baseSepolia = {
-        chainId: 84532, // ID da Base Testnet
-        name: "Base Sepolia",
+      const sepolia = {
+        chainId: 11155111,
+        name: "Sepolia",
         currency: "ETH",
-        explorerUrl: "https://sepolia.basescan.org",
-        rpcUrl: "https://sepolia.base.org",
+        explorerUrl: "https://sepolia.etherscan.io",
+        rpcUrl: "https://ethereum-sepolia.publicnode.com",
       };
-
-      // Inicializa o Modal apenas com a Base Sepolia
-      const modal = createWeb3Modal({
-        ethersConfig: defaultConfig({ metadata }),
-        chains: [baseSepolia], 
-        projectId,
-        enableAnalytics: true,
-        themeVariables: {
-          "--w3m-accent": "#22d3ee", // <--- MUDAMOS AQUI DE VOLTA PARA CIANO
-          "--w3m-border-radius-master": "1px",
-        },
-      });
 
       // Configurar interface inicial
       document.getElementById("brandLogoImg").src = LOGO_URL;
       document.getElementById("codigoValidacao").value =
         "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
 
+      // === 2. INICIALIZAR WEB3MODAL ===
+      const modal = createWeb3Modal({
+        ethersConfig: defaultConfig({ metadata }),
+        chains: [sepolia],
+        projectId,
+        enableAnalytics: true,
+        themeVariables: {
+          "--w3m-accent": "#22d3ee",
+          "--w3m-border-radius-master": "1px",
+        },
+      });
 
       // === 3. MONITORAR CONEXÃO ===
       modal.subscribeProvider(async ({ address, isConnected }) => {
@@ -425,23 +422,31 @@
             ],
           };
 
-          // C. Upload Pinata (Usando JWT direto para corrigir erro imediato)
+          // C. Upload via Backend (Netlify Functions) - SEGURANÇA TOTAL
           const res = await fetch(
-            "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+            "/.netlify/functions/upload", 
             {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${PINATA_JWT}`,
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 pinataContent: metadata,
                 pinataMetadata: { name: `Cert_${codigo}.json` },
               }),
             }
           );
-          
-          if (!res.ok) throw new Error("Erro no Upload Pinata: " + res.statusText);
+
+          // Lógica nova para ler erros corretamente
+          if (!res.ok) {
+             const errData = await res.json();
+             console.error("Detalhes do erro:", errData); 
+             
+             let msgErro = errData.error;
+             if (typeof msgErro === 'object') {
+                 msgErro = JSON.stringify(msgErro);
+             }
+             
+             throw new Error("Falha no servidor: " + (msgErro || res.statusText));
+          }
 
           const dataPinata = await res.json();
           const jsonUri = "ipfs://" + dataPinata.IpfsHash;
@@ -461,7 +466,7 @@
             "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
         } catch (e) {
           console.error(e);
-          notify(e.reason || e.message || "Erro desconhecido", "error");
+          notify(e.reason || e.message, "error");
         }
       }
 
