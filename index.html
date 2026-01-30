@@ -3,494 +3,426 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Painel do Emissor | Let's CoCreate</title>
+    
+    <meta name="description" content="Emissão de Certificados Acadêmicos em Blockchain. Segurança institucional e portabilidade para o aluno." />
+    <meta property="og:title" content="SciBound - Certificação Acadêmica Web3" />
+    <meta property="og:description" content="Transforme diplomas em ativos digitais imutáveis na rede Base." />
+    <meta property="og:image" content="https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibvorvy2rgaz5ge7iunxix4wapcul5tndnc4pqvelfj56adzskxai" />
 
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
-    />
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/toastify-js"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <title>SciBound | O Futuro da Certificação Acadêmica</title>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
       :root {
         --primary: #22d3ee;
-        --dark: #000000;
+        --primary-dark: #06b6d4;
+        --bg-dark: #000000;
         --card-bg: #111111;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
         --border: #333333;
-        --text: #f8fafc;
-        --danger: #ef4444;
       }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
       body {
         font-family: "Inter", sans-serif;
-        background: var(--dark);
-        color: var(--text);
-        margin: 0;
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      a { text-decoration: none; color: inherit; }
+
+      /* === NAVBAR === */
+      .navbar {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        min-height: 100vh;
-        padding: 20px;
-      }
-      .dashboard {
-        background: var(--card-bg);
+        padding: 20px 5%;
+        border-bottom: 1px solid var(--border);
+        position: fixed;
         width: 100%;
-        max-width: 480px;
-        padding: 35px;
-        border-radius: 24px;
-        box-shadow: 0 0 40px rgba(34, 211, 238, 0.1);
-        border: 1px solid var(--border);
-      }
-      .brand {
-        text-align: center;
-        margin-bottom: 25px;
-      }
-      .brand-logo {
-        width: 100px;
-        height: auto;
-        margin-bottom: 8px;
-        border-radius: 12px;
-      }
-      .brand span {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        color: #94a3b8;
-        display: block;
-        font-weight: 600;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
       }
 
-      /* Área da Carteira */
-      .wallet-control {
-        margin-bottom: 30px;
+      .logo {
         display: flex;
-        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        font-size: 1.2rem;
+        letter-spacing: -0.5px;
+      }
+      
+      .logo img {
+        width: 35px;
+        border-radius: 6px;
       }
 
-      .input-group {
-        margin-bottom: 15px;
-      }
-      label {
-        display: block;
-        margin-bottom: 6px;
+      .nav-btn {
+        padding: 10px 20px;
+        border-radius: 8px;
         font-weight: 600;
-        font-size: 13px;
-        color: #cbd5e1;
-      }
-      input {
-        width: 100%;
-        padding: 12px;
-        background: #000;
-        border: 1px solid var(--border);
-        color: white;
-        border-radius: 10px;
-        box-sizing: border-box;
-        font-size: 14px;
-        outline: none;
+        font-size: 0.9rem;
         transition: 0.3s;
       }
-      input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
-      }
-      .input-image input {
-        border-color: #3b82f6;
-        background: rgba(59, 130, 246, 0.05);
-      }
-      .input-image input:focus {
-        border-color: #60a5fa;
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
-      }
-      button {
-        width: 100%;
-        padding: 14px;
-        background: var(--primary);
-        color: black;
-        border: none;
-        border-radius: 10px;
-        font-size: 15px;
-        font-weight: 800;
-        cursor: pointer;
-        transition: transform 0.2s;
-        margin-top: 10px;
-      }
-      button:hover {
-        transform: translateY(-2px);
-        filter: brightness(1.1);
-        box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
-      }
-      .btn-link {
-        display: block;
-        text-align: center;
-        margin-top: 20px;
-        padding: 12px;
+
+      .btn-outline {
         border: 1px solid var(--border);
-        border-radius: 10px;
-        color: var(--text);
-        text-decoration: none;
-        font-size: 13px;
-        transition: 0.3s;
-        background: rgba(255, 255, 255, 0.03);
+        color: var(--text-main);
+        margin-right: 10px;
       }
-      .btn-link:hover {
+      .btn-outline:hover {
         border-color: var(--primary);
         color: var(--primary);
       }
-      .footer-note {
-        margin-top: 25px;
-        text-align: center;
-        font-size: 11px;
-        color: #475569;
+
+      .btn-primary {
+        background: var(--primary);
+        color: #000;
+        border: none;
       }
-      .footer-note a {
-        color: #64748b;
-        text-decoration: none;
-      }
-      details {
-        margin-top: 30px;
-        border-top: 1px solid var(--border);
-        padding-top: 15px;
-      }
-      summary {
-        color: var(--danger);
-        font-size: 12px;
-        cursor: pointer;
-        font-weight: bold;
-        text-align: center;
-        list-style: none;
-      }
-      .btn-revoke {
-        background: transparent;
-        border: 1px solid var(--danger);
-        color: var(--danger);
-        box-shadow: none;
-        margin-top: 10px;
-      }
-      .btn-revoke:hover {
-        background: var(--danger);
-        color: white;
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
       }
 
-      /* Mensagem de boas vindas quando desconectado */
-      #welcomeMsg {
+      /* === HERO SECTION === */
+      .hero {
+        padding: 160px 5% 100px;
         text-align: center;
-        color: #94a3b8;
-        font-size: 14px;
-        margin-top: 20px;
-      }
-
-      /* Ajuste do botão Web3Modal */
-      w3m-button {
-        display: block;
+        max-width: 1000px;
         margin: 0 auto;
+        position: relative;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(34,211,238,0.15) 0%, rgba(0,0,0,0) 70%);
+        z-index: -1;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 6px 12px;
+        background: rgba(34, 211, 238, 0.1);
+        color: var(--primary);
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        border: 1px solid rgba(34, 211, 238, 0.2);
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        background: linear-gradient(to right, #fff, #94a3b8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        max-width: 700px;
+        margin: 0 auto 40px;
+      }
+
+      .hero-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .btn-hero {
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.3s;
+      }
+
+      /* === BENEFITS SECTION === */
+      .benefits {
+        padding: 80px 5%;
+        background: var(--card-bg);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .section-header h2 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 30px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        transition: 0.3s;
+      }
+
+      .card:hover {
+        border-color: var(--primary);
+        transform: translateY(-5px);
+      }
+
+      .icon-box {
+        width: 50px;
+        height: 50px;
+        background: rgba(34, 211, 238, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      .card h3 {
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+      }
+
+      .card p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+      }
+
+      .card ul {
+        list-style: none;
+        color: var(--text-muted);
+      }
+
+      .card ul li {
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.9rem;
+      }
+
+      .card ul li i {
+        color: var(--primary);
+        font-size: 0.8rem;
+      }
+
+      /* === HOW IT WORKS === */
+      .steps {
+        padding: 100px 5%;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .step-item {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 60px;
+        align-items: flex-start;
+      }
+
+      .step-number {
+        font-size: 4rem;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.05);
+        line-height: 0.8;
+      }
+
+      .step-content h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: var(--primary);
+      }
+
+      /* === CTA SECTION === */
+      .cta {
+        text-align: center;
+        padding: 100px 20px;
+        background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(34, 211, 238, 0.05) 100%);
+      }
+
+      .cta h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      .footer {
+        padding: 40px 5%;
+        text-align: center;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      /* Responsividade */
+      @media (max-width: 768px) {
+        .hero h1 { font-size: 2.5rem; }
+        .grid-3 { grid-template-columns: 1fr; }
+        .step-item { flex-direction: column; gap: 10px; }
+        .step-number { font-size: 3rem; }
       }
     </style>
   </head>
   <body>
-    <div class="dashboard">
-      <div class="brand">
-        <img
-          id="brandLogoImg"
-          class="brand-logo"
-          src=""
-          alt=""
-          crossorigin="anonymous"
-        />
-        <span> SciBound | Soulbound Tokens </span>
+
+    <nav class="navbar">
+      <div class="logo">
+        <img src="https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi" alt="Logo">
+        SciBound
+      </div>
+      <div>
+        <a href="verificar.html" class="nav-btn btn-outline"><i class="fas fa-search"></i> Verificar</a>
+        <a href="painel.html" class="nav-btn btn-primary">Acessar Painel</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="tag">🚀 Tecnologia Blockchain Base L2</div>
+      <h1>Transforme seus Certificados em Ativos Digitais Imutáveis</h1>
+      <p>
+        Garanta a autenticidade acadêmica e proteja sua marca contra fraudes.
+        O SciBound eleva sua instituição ao novo padrão de confiança digital com emissão de Soulbound Tokens (SBTs).
+      </p>
+      <div class="hero-buttons">
+        <a href="painel.html" class="btn-hero btn-primary" style="text-decoration: none; color: black;">
+          <i class="fas fa-rocket"></i> Começar Piloto Gratuito
+        </a>
+        <a href="verificar.html" class="btn-hero btn-outline" style="text-decoration: none;">
+          <i class="fas fa-check-circle"></i> Testar Validação
+        </a>
+      </div>
+      <p style="font-size: 0.8rem; margin-top: 20px; opacity: 0.6;">
+        🔒 Segurança institucional via Smart Contracts auditados
+      </p>
+    </section>
+
+    <section class="benefits">
+      <div class="section-header">
+        <h2>O Ecossistema SciBound</h2>
+        <p>Conectando as três pontas do mercado educacional com confiança matemática.</p>
       </div>
 
-      <div class="wallet-control">
-        <w3m-button label="🔌 Conectar Carteira" balance="show"></w3m-button>
+      <div class="grid-3">
+        <div class="card">
+          <div class="icon-box"><i class="fas fa-university"></i></div>
+          <h3>Para a Instituição</h3>
+          <p>Acabe com o mercado negro de diplomas e reduza custos operacionais.</p>
+          <ul>
+            <li><i class="fas fa-check"></i> Blindagem de Marca</li>
+            <li><i class="fas fa-check"></i> Redução de Custos de Validação</li>
+            <li><i class="fas fa-check"></i> Gestão via Painel Simples</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="icon-box"><i class="fas fa-user-graduate"></i></div>
+          <h3>Para o Aluno</h3>
+          <p>O diploma pertence ao aluno. Um ativo digital que vive para sempre na carteira.</p>
+          <ul>
+            <li><i class="fas fa-check"></i> Posse Real (Sovereignty)</li>
+            <li><i class="fas fa-check"></i> Intransferível (Soulbound)</li>
+            <li><i class="fas fa-check"></i> Integração com LinkedIn</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="icon-box"><i class="fas fa-briefcase"></i></div>
+          <h3>Para o Mercado</h3>
+          <p>Recrutamento sem dúvidas. Validação instantânea sem e-mails ou telefonemas.</p>
+          <ul>
+            <li><i class="fas fa-check"></i> Confiança Zero (Trustless)</li>
+            <li><i class="fas fa-check"></i> Validação em 1 Clique</li>
+            <li><i class="fas fa-check"></i> Histórico Auditável</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="steps">
+      <div class="section-header">
+        <h2>A Jornada do Dado</h2>
+        <p>Complexidade oculta, experiência fluida.</p>
       </div>
 
-      <div id="welcomeMsg">👆 Conecte sua carteira para acessar o painel.</div>
-
-      <div id="mainArea" style="display: none">
-        <div class="input-group input-image">
-          <label style="color: #60a5fa">🔗 Link da Imagem do Certificado</label>
-          <input
-            type="text"
-            id="ipfsImageInput"
-            placeholder="Ex: https://gateway.pinata.cloud/ipfs/Qm..."
-          />
+      <div class="step-item">
+        <div class="step-number">01</div>
+        <div class="step-content">
+          <h3>Emissão (Mint)</h3>
+          <p>A Instituição acessa o Painel do Emissor, insere os dados e assina. O Smart Contract cria um vínculo eterno na Blockchain Base.</p>
         </div>
-
-        <div class="input-group">
-          <label>Nome do Aluno</label
-          ><input type="text" id="nomeAluno" placeholder="Ex: Ana Silva" />
-        </div>
-        <div class="input-group">
-          <label>Curso</label
-          ><input
-            type="text"
-            id="nomeCurso"
-            placeholder="Ex: Blockchain Specialist"
-          />
-        </div>
-        <div class="input-group">
-          <label>Data de Conclusão</label
-          ><input
-            type="text"
-            id="dataColacao"
-            placeholder="Ex: 18 de dezembro de 2025"
-          />
-        </div>
-        <div class="input-group">
-          <label>Carteira do aluno (0x...)</label
-          ><input type="text" id="walletAluno" placeholder="Endereço público" />
-        </div>
-        <div class="input-group">
-          <label>Código Validação</label
-          ><input
-            type="text"
-            id="codigoValidacao"
-            placeholder="Gerado ao emitir"
-          />
-        </div>
-
-        <button onclick="emitirDiploma()">✨ Registrar na Blockchain</button>
-
-        <details>
-          <summary>⚠️ Opções de Revogação</summary>
-          <div style="margin-top: 10px">
-            <input
-              type="number"
-              id="idRevogar"
-              placeholder="ID do Token"
-              style="margin-bottom: 5px"
-            />
-            <input type="text" id="motivoRevogar" placeholder="Motivo" />
-            <button class="btn-revoke" onclick="revogarDiploma()">
-              Revogar Permanentemente
-            </button>
-          </div>
-        </details>
       </div>
 
-      <a href="verificar.html" target="_blank" class="btn-link"
-        >🔍 Verificador de Certificados</a
-      >
-
-      <div class="footer-note">
-        Tecnologia
-        <a href="https://www.letscocreate.com.br/" target="_blank"
-          >Let's CoCreate</a
-        >
-        (conforme Portaria MEC nº 70/2025).
+      <div class="step-item">
+        <div class="step-number">02</div>
+        <div class="step-content">
+          <h3>Custódia (Hold)</h3>
+          <p>O aluno recebe o Soulbound Token na sua carteira. Ele não pode vender nem transferir, garantindo que o mérito é 100% pessoal.</p>
+        </div>
       </div>
-    </div>
 
-    <script type="module">
-      import {
-        createWeb3Modal,
-        defaultConfig,
-      } from "https://esm.sh/@web3modal/ethers@4.0.1";
-      import { BrowserProvider, Contract } from "https://esm.sh/ethers@6.11.1";
+      <div class="step-item">
+        <div class="step-number">03</div>
+        <div class="step-content">
+          <h3>Verificação (Verify)</h3>
+          <p>Recrutadores acessam o Validador Público. O sistema lê direto da Blockchain e confirma a autenticidade em tempo real.</p>
+        </div>
+      </div>
+    </section>
 
-      // === 1. CONFIGURAÇÕES (DEFINIDAS NO INÍCIO) ===
-      const LOGO_URL =
-        "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
-      
-      // ⚠️ IMPORTANTE: CONFIRA SE ESTE É O ENDEREÇO DA BASE!
-      const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09";
-      
-      const LINK_VERIFICADOR = "https://scibound.netlify.app/verificar.html";
+    <section class="cta">
+      <h2>Sua Instituição pronta para a Web3</h2>
+      <p style="max-width: 600px; margin: 0 auto 30px; color: var(--text-muted);">
+        Você não precisa entender de Smart Contracts ou Gas Fees. Nós cuidamos da infraestrutura. Você foca em ensinar.
+      </p>
+      <a href="painel.html" class="btn-hero btn-primary" style="text-decoration: none; color: black;">
+        Acessar Painel de Emissão
+      </a>
+    </section>
 
-      const projectId = "ccaa314f20e97669bf6e926f17670656"; // Seu ID
+    <footer class="footer">
+      <p>© 2025 SciBound. Tecnologia Let's CoCreate conforme Portaria MEC nº 70/2025.</p>
+    </footer>
 
-      const metadata = {
-        name: "Emissor CoCreate",
-        description: "Painel de Emissão",
-        url: window.location.origin,
-        icons: [LOGO_URL],
-      };
-
-      // === CONFIGURAÇÃO BASE MAINNET (OFICIAL) ===
-      const baseMainnet = {
-        chainId: 8453, // ID Oficial da Base
-        name: "Base",
-        currency: "ETH",
-        explorerUrl: "https://basescan.org",
-        rpcUrl: "https://mainnet.base.org",
-      };
-
-      // Configurar interface inicial
-      document.getElementById("brandLogoImg").src = LOGO_URL;
-      document.getElementById("codigoValidacao").value =
-        "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
-
-      // === 2. INICIALIZAR WEB3MODAL ===
-      const modal = createWeb3Modal({
-        ethersConfig: defaultConfig({ metadata }),
-        chains: [baseMainnet], // <--- USANDO BASE MAINNET
-        projectId,
-        enableAnalytics: true,
-        themeVariables: {
-          "--w3m-accent": "#22d3ee",
-          "--w3m-border-radius-master": "1px",
-        },
-      });
-
-      // === 3. MONITORAR CONEXÃO ===
-      modal.subscribeProvider(async ({ address, isConnected }) => {
-        if (isConnected) {
-          console.log("Conectado:", address);
-          // Mostra o formulário e esconde a msg de boas vindas
-          document.getElementById("mainArea").style.display = "block";
-          document.getElementById("welcomeMsg").style.display = "none";
-
-          notify("✅ Sistema Pronto para Emissão", "success");
-        } else {
-          // Esconde formulário, mostra msg de boas vindas
-          document.getElementById("mainArea").style.display = "none";
-          document.getElementById("welcomeMsg").style.display = "block";
-        }
-      });
-
-      const abi = [
-        "function emitirCertificado(address aluno, string memory uri) public",
-        "function revogarCertificado(uint256 tokenId, string memory motivo) public",
-      ];
-
-      // === 4. FUNÇÕES DE NEGÓCIO ===
-      async function getSigner() {
-        const walletProvider = modal.getWalletProvider();
-        if (!walletProvider)
-          throw new Error("Carteira não encontrada. Conecte novamente.");
-        const provider = new BrowserProvider(walletProvider);
-        const signer = await provider.getSigner();
-        return signer;
-      }
-
-      function notify(msg, type) {
-        Toastify({
-          text: msg,
-          duration: 4000,
-          gravity: "top",
-          position: "center",
-          style: {
-            background:
-              type === "success"
-                ? "#10B981"
-                : type === "error"
-                ? "#EF4444"
-                : "#3B82F6",
-            borderRadius: "10px",
-          },
-        }).showToast();
-      }
-
-      async function emitirDiploma() {
-        const ipfsImage = document.getElementById("ipfsImageInput").value;
-        const nome = document.getElementById("nomeAluno").value;
-        const curso = document.getElementById("nomeCurso").value;
-        const data = document.getElementById("dataColacao").value;
-        const wallet = document.getElementById("walletAluno").value;
-        const codigo = document.getElementById("codigoValidacao").value;
-
-        if (!ipfsImage || !nome || !wallet)
-          return notify("Preencha todos os campos obrigatórios.", "error");
-
-        notify("⏳ Criando metadados...", "loading");
-
-        try {
-          // A. Pega Signer
-          const signer = await getSigner();
-          const contract = new Contract(contractAddress, abi, signer);
-
-          // B. Monta Metadados
-          const metadata = {
-            name: `Certificado Let's CoCreate - ${nome}`,
-            description: "Certificado Soulbound Token.",
-            image: ipfsImage,
-            external_url: `${LINK_VERIFICADOR}?id=${codigo}`,
-            attributes: [
-              { trait_type: "Instituição", value: "Let's CoCreate" },
-              { trait_type: "Estudante", value: nome },
-              { trait_type: "Curso", value: curso },
-              { trait_type: "Data de Conclusão", value: data },
-              { trait_type: "Código de Validação", value: codigo },
-            ],
-          };
-
-          // C. Upload via Backend (Netlify Functions) - SEGURANÇA TOTAL
-          const res = await fetch(
-            "/.netlify/functions/upload", 
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                pinataContent: metadata,
-                pinataMetadata: { name: `Cert_${codigo}.json` },
-              }),
-            }
-          );
-
-          // Lógica nova para ler erros corretamente
-          if (!res.ok) {
-             const errData = await res.json();
-             console.error("Detalhes do erro:", errData); 
-             
-             let msgErro = errData.error;
-             if (typeof msgErro === 'object') {
-                 msgErro = JSON.stringify(msgErro);
-             }
-             
-             throw new Error("Falha no servidor: " + (msgErro || res.statusText));
-          }
-
-          const dataPinata = await res.json();
-          const jsonUri = "ipfs://" + dataPinata.IpfsHash;
-
-          // D. Transação
-          notify("⏳ Aprove na sua Carteira...", "loading");
-          const tx = await contract.emitirCertificado(wallet, jsonUri);
-
-          notify("⏳ Confirmando no Bloco...", "loading");
-          await tx.wait();
-
-          notify(`🎉 Sucesso! Hash: ${tx.hash.slice(0, 6)}...`, "success");
-          confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-
-          // Gera novo código
-          document.getElementById("codigoValidacao").value =
-            "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
-        } catch (e) {
-          console.error(e);
-          notify(e.reason || e.message, "error");
-        }
-      }
-
-      async function revogarDiploma() {
-        const id = document.getElementById("idRevogar").value;
-        const motivo = document.getElementById("motivoRevogar").value;
-        if (!id) return;
-        if (!confirm("Confirmar Revogação?")) return;
-        try {
-          const signer = await getSigner();
-          const contract = new Contract(contractAddress, abi, signer);
-
-          const tx = await contract.revogarCertificado(id, motivo);
-          notify("Revogando...", "loading");
-          await tx.wait();
-          notify("Token Queimado 🔥", "success");
-        } catch (e) {
-          notify(e.message, "error");
-        }
-      }
-
-      // === 5. EXPOR FUNÇÕES PARA O HTML ===
-      window.emitirDiploma = emitirDiploma;
-      window.revogarDiploma = revogarDiploma;
-    </script>
   </body>
 </html>
