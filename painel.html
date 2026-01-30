@@ -40,176 +40,36 @@
         box-shadow: 0 0 40px rgba(34, 211, 238, 0.1);
         border: 1px solid var(--border);
       }
-      .brand {
-        text-align: center;
-        margin-bottom: 25px;
-      }
-      .brand-logo {
-        width: 100px;
-        height: auto;
-        margin-bottom: 8px;
-        border-radius: 12px;
-      }
-      .brand span {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        color: #94a3b8;
-        display: block;
-        font-weight: 600;
-      }
-
-      /* Área da Carteira */
-      .wallet-control {
-        margin-bottom: 30px;
-        display: flex;
-        justify-content: center;
-      }
-
-      .input-group {
-        margin-bottom: 15px;
-      }
-      label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: 600;
-        font-size: 13px;
-        color: #cbd5e1;
-      }
-      input[type="text"], input[type="number"] {
-        width: 100%;
-        padding: 12px;
-        background: #000;
-        border: 1px solid var(--border);
-        color: white;
-        border-radius: 10px;
-        box-sizing: border-box;
-        font-size: 14px;
-        outline: none;
-        transition: 0.3s;
-      }
-      input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
-      }
-
-      /* === ESTILO: ÁREA DE UPLOAD (Drag & Drop) === */
-      .upload-zone {
-        border: 2px dashed var(--border);
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: 0.3s;
-        background: rgba(255,255,255,0.02);
-        position: relative;
-        overflow: hidden;
-      }
-      .upload-zone:hover, .upload-zone.dragover {
-        border-color: var(--primary);
-        background: rgba(34, 211, 238, 0.05);
-      }
-      .upload-icon {
-        font-size: 24px;
-        color: var(--primary);
-        margin-bottom: 10px;
-      }
-      .upload-text {
-        font-size: 12px;
-        color: #94a3b8;
-      }
-      .preview-img {
-        max-width: 100%;
-        max-height: 200px;
-        border-radius: 8px;
-        display: none;
-        margin-top: 10px;
-        border: 1px solid var(--border);
-      }
-
-      /* Botões */
-      button {
-        width: 100%;
-        padding: 14px;
-        background: var(--primary);
-        color: black;
-        border: none;
-        border-radius: 10px;
-        font-size: 15px;
-        font-weight: 800;
-        cursor: pointer;
-        transition: transform 0.2s;
-        margin-top: 10px;
-      }
-      button:hover {
-        transform: translateY(-2px);
-        filter: brightness(1.1);
-        box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
-      }
-      .btn-link {
-        display: block;
-        text-align: center;
-        margin-top: 20px;
-        padding: 12px;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        color: var(--text);
-        text-decoration: none;
-        font-size: 13px;
-        transition: 0.3s;
-        background: rgba(255, 255, 255, 0.03);
-      }
-      .btn-link:hover {
-        border-color: var(--primary);
-        color: var(--primary);
-      }
-      .footer-note {
-        margin-top: 25px;
-        text-align: center;
-        font-size: 11px;
-        color: #475569;
-      }
-      .footer-note a {
-        color: #64748b;
-        text-decoration: none;
-      }
+      .brand { text-align: center; margin-bottom: 25px; }
+      .brand-logo { width: 100px; height: auto; margin-bottom: 8px; border-radius: 12px; }
+      .brand span { font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: #94a3b8; display: block; font-weight: 600; }
+      .wallet-control { margin-bottom: 30px; display: flex; justify-content: center; }
+      .input-group { margin-bottom: 15px; }
+      label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #cbd5e1; }
+      input[type="text"], input[type="number"] { width: 100%; padding: 12px; background: #000; border: 1px solid var(--border); color: white; border-radius: 10px; box-sizing: border-box; font-size: 14px; outline: none; transition: 0.3s; }
+      input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2); }
       
-      /* Revogação */
-      details {
-        margin-top: 30px;
-        border-top: 1px solid var(--border);
-        padding-top: 15px;
-      }
-      summary {
-        color: var(--danger);
-        font-size: 12px;
-        cursor: pointer;
-        font-weight: bold;
-        text-align: center;
-        list-style: none;
-      }
-      .btn-revoke {
-        background: transparent;
-        border: 1px solid var(--danger);
-        color: var(--danger);
-        box-shadow: none;
-        margin-top: 10px;
-      }
-      .btn-revoke:hover {
-        background: var(--danger);
-        color: white;
-      }
+      .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; background: rgba(255,255,255,0.02); position: relative; overflow: hidden; }
+      .upload-zone:hover, .upload-zone.dragover { border-color: var(--primary); background: rgba(34, 211, 238, 0.05); }
+      .upload-icon { font-size: 24px; color: var(--primary); margin-bottom: 10px; }
+      .upload-text { font-size: 12px; color: #94a3b8; }
+      .preview-img { max-width: 100%; max-height: 200px; border-radius: 8px; display: none; margin-top: 10px; border: 1px solid var(--border); }
+
+      button { width: 100%; padding: 14px; background: var(--primary); color: black; border: none; border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; transition: transform 0.2s; margin-top: 10px; }
+      button:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 0 15px rgba(34, 211, 238, 0.4); }
+      .btn-link { display: block; text-align: center; margin-top: 20px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; color: var(--text); text-decoration: none; font-size: 13px; transition: 0.3s; background: rgba(255, 255, 255, 0.03); }
+      .btn-link:hover { border-color: var(--primary); color: var(--primary); }
+      .footer-note { margin-top: 25px; text-align: center; font-size: 11px; color: #475569; }
+      .footer-note a { color: #64748b; text-decoration: none; }
       
-      #welcomeMsg {
-        text-align: center;
-        color: #94a3b8;
-        font-size: 14px;
-        margin-top: 20px;
-      }
-      w3m-button {
-        display: block;
-        margin: 0 auto;
-      }
+      /* REVOGAÇÃO (Escondido por padrão) */
+      details { margin-top: 30px; border-top: 1px solid var(--border); padding-top: 15px; }
+      summary { color: var(--danger); font-size: 12px; cursor: pointer; font-weight: bold; text-align: center; list-style: none; }
+      .btn-revoke { background: transparent; border: 1px solid var(--danger); color: var(--danger); box-shadow: none; margin-top: 10px; }
+      .btn-revoke:hover { background: var(--danger); color: white; }
+      
+      #welcomeMsg { text-align: center; color: #94a3b8; font-size: 14px; margin-top: 20px; }
+      w3m-button { display: block; margin: 0 auto; }
     </style>
   </head>
   <body>
@@ -256,29 +116,22 @@
 
         <div class="input-group">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <label>Código de Validação (ou Matrícula)</label>
-            <span 
-              onclick="gerarCodigoAleatorio()" 
-              style="font-size: 11px; color: var(--primary); cursor: pointer; text-decoration: underline;"
-            >
-              🔄 Gerar Aleatório
-            </span>
+            <label>Código de Validação</label>
+            <span onclick="gerarCodigoAleatorio()" style="font-size: 11px; color: var(--primary); cursor: pointer; text-decoration: underline;">🔄 Gerar Aleatório</span>
           </div>
           <input type="text" id="codigoValidacao" placeholder="Ex: RA-2026-B" />
           <p style="font-size: 11px; color: #64748b; margin: 5px 0 0 0; line-height: 1.4;">
-            ℹ️ Identificador único deste documento (Ex: RA, Matrícula ou Protocolo). 
-            Use o gerado automaticamente ou digite o seu padrão interno. 
-            <strong>Não use códigos repetidos.</strong>
+            ℹ️ Identificador único (Ex: Matrícula). <strong>Não use códigos repetidos.</strong>
           </p>
         </div>
 
         <button onclick="emitirDiploma()">✨ Registrar na Blockchain</button>
 
-        <details>
-          <summary>⚠️ Opções de Revogação</summary>
+        <details id="areaRevogacao" style="display: none;">
+          <summary>⚠️ Painel Administrativo (Revogação)</summary>
           <div style="margin-top: 10px">
-            <input type="number" id="idRevogar" placeholder="ID do Token" style="margin-bottom: 5px" />
-            <input type="text" id="motivoRevogar" placeholder="Motivo" />
+            <input type="number" id="idRevogar" placeholder="ID do Token (Ex: 5)" style="margin-bottom: 5px" />
+            <input type="text" id="motivoRevogar" placeholder="Motivo da revogação" />
             <button class="btn-revoke" onclick="revogarDiploma()">Revogar Permanentemente</button>
           </div>
         </details>
@@ -286,10 +139,7 @@
 
       <a href="verificar.html" target="_blank" class="btn-link">🔍 Verificador de Certificados</a>
 
-      <div class="footer-note">
-        Tecnologia <a href="https://www.letscocreate.com.br/" target="_blank">Let's CoCreate</a>
-        (conforme Portaria MEC nº 70/2025).
-      </div>
+      <div class="footer-note">Tecnologia Let's CoCreate</div>
     </div>
 
     <script type="module">
@@ -297,73 +147,68 @@
       import { BrowserProvider, Contract } from "https://esm.sh/ethers@6.11.1";
 
       const LOGO_URL = "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
-      // Endereço Base Mainnet
       const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09"; 
       const LINK_VERIFICADOR = "https://scibound.netlify.app/verificar.html";
       const projectId = "ccaa314f20e97669bf6e926f17670656";
 
-      const metadata = {
-        name: "Emissor CoCreate",
-        description: "Painel de Emissão",
-        url: window.location.origin,
-        icons: [LOGO_URL],
-      };
-
-      const baseMainnet = {
-        chainId: 8453,
-        name: "Base",
-        currency: "ETH",
-        explorerUrl: "https://basescan.org",
-        rpcUrl: "https://mainnet.base.org",
-      };
+      const metadata = { name: "Emissor", description: "Painel", url: window.location.origin, icons: [LOGO_URL] };
+      const baseMainnet = { chainId: 8453, name: "Base", currency: "ETH", explorerUrl: "https://basescan.org", rpcUrl: "https://mainnet.base.org" };
 
       document.getElementById("brandLogoImg").src = LOGO_URL;
       
-      // Função Auxiliar de Notificação
       function notify(msg, type) {
-        Toastify({
-          text: msg,
-          duration: 4000,
-          gravity: "top",
-          position: "center",
-          style: {
-            background: type === "success" ? "#10B981" : type === "error" ? "#EF4444" : "#3B82F6",
-            borderRadius: "10px",
-          },
-        }).showToast();
+        Toastify({ text: msg, duration: 4000, gravity: "top", position: "center", style: { background: type === "success" ? "#10B981" : type === "error" ? "#EF4444" : "#3B82F6", borderRadius: "10px" } }).showToast();
       }
 
-      // Função para Gerar Código Aleatório
       window.gerarCodigoAleatorio = function() {
-        const novoCod = "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
-        document.getElementById("codigoValidacao").value = novoCod;
-        if(document.getElementById("mainArea").style.display === "block") {
-            notify("Novo código gerado!", "success");
-        }
+        document.getElementById("codigoValidacao").value = "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+        if(document.getElementById("mainArea").style.display === "block") notify("Novo código gerado!", "success");
       }
-      // Gera um inicial ao carregar
       window.gerarCodigoAleatorio();
 
-      // Configuração Web3Modal
-      const modal = createWeb3Modal({
-        ethersConfig: defaultConfig({ metadata }),
-        chains: [baseMainnet],
-        projectId,
-        themeVariables: { "--w3m-accent": "#22d3ee", "--w3m-border-radius-master": "1px" },
-      });
+      const modal = createWeb3Modal({ ethersConfig: defaultConfig({ metadata }), chains: [baseMainnet], projectId, themeVariables: { "--w3m-accent": "#22d3ee", "--w3m-border-radius-master": "1px" } });
 
+      // === ATUALIZADO: ABI COM FUNÇÃO OWNER ===
+      const abi = [
+        "function emitirCertificado(address aluno, string memory uri) public",
+        "function revogarCertificado(uint256 tokenId) public",
+        "function owner() view returns (address)" // Necessário para verificar dono
+      ];
+
+      // === ATUALIZADO: LÓGICA DE VERIFICAÇÃO DE DONO ===
       modal.subscribeProvider(async ({ address, isConnected }) => {
         if (isConnected) {
           document.getElementById("mainArea").style.display = "block";
           document.getElementById("welcomeMsg").style.display = "none";
-          notify("✅ Sistema Pronto para Emissão", "success");
+          notify("✅ Carteira Conectada", "success");
+
+          // Verifica se é o dono para liberar a revogação
+          try {
+            const provider = new BrowserProvider(modal.getWalletProvider());
+            const contract = new Contract(contractAddress, abi, provider);
+            
+            // Pega o dono do contrato na Blockchain
+            const ownerAddress = await contract.owner();
+            
+            // Compara (tudo minúsculo para garantir)
+            if (address.toLowerCase() === ownerAddress.toLowerCase()) {
+                document.getElementById("areaRevogacao").style.display = "block";
+                console.log("Modo Admin: Ativado");
+            } else {
+                document.getElementById("areaRevogacao").style.display = "none";
+                console.log("Modo Admin: Bloqueado (Você não é o dono)");
+            }
+          } catch (e) {
+            console.error("Erro ao verificar admin:", e);
+          }
+
         } else {
           document.getElementById("mainArea").style.display = "none";
           document.getElementById("welcomeMsg").style.display = "block";
         }
       });
 
-      // === LÓGICA DE UPLOAD (DRAG & DROP) ===
+      // Lógica de Upload
       const dropZone = document.getElementById('dropZone');
       const fileInput = document.getElementById('fileInput');
       const imagePreview = document.getElementById('imagePreview');
@@ -371,37 +216,17 @@
 
       dropZone.addEventListener('click', () => fileInput.click());
       fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
-
-      dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('dragover');
-      });
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
       dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-      dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-        handleFile(e.dataTransfer.files[0]);
-      });
+      dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
 
       function handleFile(file) {
         if (file && file.type.startsWith('image/')) {
           const reader = new FileReader();
-          reader.onload = (e) => {
-            currentFileBase64 = e.target.result;
-            imagePreview.src = currentFileBase64;
-            imagePreview.style.display = 'block';
-            document.querySelector('.upload-text').innerText = file.name;
-          };
+          reader.onload = (e) => { currentFileBase64 = e.target.result; imagePreview.src = currentFileBase64; imagePreview.style.display = 'block'; document.querySelector('.upload-text').innerText = file.name; };
           reader.readAsDataURL(file);
-        } else {
-          notify("Por favor, selecione uma imagem válida.", "error");
-        }
+        } else { notify("Imagem inválida.", "error"); }
       }
-
-      const abi = [
-        "function emitirCertificado(address aluno, string memory uri) public",
-        "function revogarCertificado(uint256 tokenId, string memory motivo) public",
-      ];
 
       async function getSigner() {
         const walletProvider = modal.getWalletProvider();
@@ -411,46 +236,30 @@
       }
 
       async function emitirDiploma() {
-        if (!currentFileBase64) return notify("⚠️ Faça o upload da imagem do certificado!", "error");
-
+        if (!currentFileBase64) return notify("⚠️ Faça o upload da imagem!", "error");
         const nome = document.getElementById("nomeAluno").value;
         const curso = document.getElementById("nomeCurso").value;
         const data = document.getElementById("dataColacao").value;
         const wallet = document.getElementById("walletAluno").value;
         const codigo = document.getElementById("codigoValidacao").value;
 
-        if (!nome || !wallet || !codigo) return notify("Preencha todos os campos obrigatórios.", "error");
+        if (!nome || !wallet || !codigo) return notify("Preencha todos os campos.", "error");
 
         try {
-          // 1. Upload da Imagem (Via Netlify Functions)
-          notify("⏳ Enviando imagem para IPFS...", "loading");
-          
-          const imgRes = await fetch("/.netlify/functions/upload-img", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              imageBase64: currentFileBase64,
-              name: `Img_${codigo}`
-            }),
-          });
+          notify("⏳ Subindo imagem...", "loading");
+          const imgRes = await fetch("/.netlify/functions/upload-img", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ imageBase64: currentFileBase64, name: `Img_${codigo}` }) });
+          if (!imgRes.ok) throw new Error((await imgRes.json()).error || "Erro imagem");
+          const ipfsImageLink = "https://gateway.pinata.cloud/ipfs/" + (await imgRes.json()).IpfsHash;
 
-          if (!imgRes.ok) {
-            const err = await imgRes.json();
-            throw new Error(err.error || "Erro ao subir imagem.");
-          }
-          const imgData = await imgRes.json();
-          const ipfsImageLink = "https://gateway.pinata.cloud/ipfs/" + imgData.IpfsHash;
-
-          // 2. Metadados
-          notify("⏳ Criando metadados...", "loading");
+          notify("⏳ Gerando metadados...", "loading");
           const signer = await getSigner();
           const contract = new Contract(contractAddress, abi, signer);
 
           const metadata = {
             name: `Certificado Let's CoCreate - ${nome}`,
             description: "Certificado Soulbound Token.",
-            image: ipfsImageLink, 
-            external_url: LINK_VERIFICADOR, // LINK FIXO (Sem ID) para não quebrar
+            image: ipfsImageLink,
+            external_url: LINK_VERIFICADOR,
             attributes: [
               { trait_type: "Instituição", value: "Let's CoCreate" },
               { trait_type: "Estudante", value: nome },
@@ -460,56 +269,38 @@
             ],
           };
 
-          // 3. Upload JSON
-          const metaRes = await fetch("/.netlify/functions/upload", {
-             method: "POST",
-             headers: { "Content-Type": "application/json" },
-             body: JSON.stringify({
-               pinataContent: metadata,
-               pinataMetadata: { name: `Cert_${codigo}.json` },
-             }),
-          });
-          
-          if (!metaRes.ok) throw new Error("Erro ao subir metadados.");
-          const metaDataPinata = await metaRes.json();
-          const jsonUri = "ipfs://" + metaDataPinata.IpfsHash;
+          const metaRes = await fetch("/.netlify/functions/upload", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pinataContent: metadata, pinataMetadata: { name: `Cert_${codigo}.json` } }) });
+          if (!metaRes.ok) throw new Error("Erro metadados");
+          const jsonUri = "ipfs://" + (await metaRes.json()).IpfsHash;
 
-          // 4. Transação
-          notify("⏳ Aprove na sua Carteira...", "loading");
+          notify("⏳ Aprove na Carteira...", "loading");
           const tx = await contract.emitirCertificado(wallet, jsonUri);
-
-          notify("⏳ Confirmando no Bloco...", "loading");
+          notify("⏳ Confirmando...", "loading");
           await tx.wait();
 
           notify(`🎉 Sucesso! Hash: ${tx.hash.slice(0, 6)}...`, "success");
           confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-
-          // Reset do Form
+          
           window.gerarCodigoAleatorio();
           document.getElementById("imagePreview").style.display = "none";
-          document.getElementById("imagePreview").src = "";
           document.querySelector('.upload-text').innerText = "Clique ou Arraste o arquivo aqui";
           currentFileBase64 = null;
-          
-        } catch (e) {
-          console.error(e);
-          notify(e.reason || e.message || "Erro desconhecido", "error");
-        }
+        } catch (e) { console.error(e); notify(e.reason || e.message || "Erro desconhecido", "error"); }
       }
 
       async function revogarDiploma() {
         const id = document.getElementById("idRevogar").value;
         const motivo = document.getElementById("motivoRevogar").value;
         if (!id) return;
-        if (!confirm("Confirmar Revogação?")) return;
+        if (!confirm("Tem certeza absoluta? Isso não pode ser desfeito.")) return;
         try {
           const signer = await getSigner();
           const contract = new Contract(contractAddress, abi, signer);
-          const tx = await contract.revogarCertificado(id, motivo);
+          const tx = await contract.revogarCertificado(id);
           notify("Revogando...", "loading");
           await tx.wait();
-          notify("Token Queimado 🔥", "success");
-        } catch (e) { notify(e.message, "error"); }
+          notify("Certificado Revogado 🚫", "success");
+        } catch (e) { notify(e.reason || e.message, "error"); }
       }
 
       window.emitirDiploma = emitirDiploma;
