@@ -80,11 +80,21 @@
         margin-top: 6px;
       }
 
+      .search-container {
+        margin-bottom: 30px;
+      }
       .search-box {
         display: flex;
         gap: 10px;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
       }
+      .search-helper {
+        font-size: 12px;
+        color: #64748b;
+        text-align: center;
+        margin: 0;
+      }
+      
       input {
         flex: 1;
         padding: 14px;
@@ -99,6 +109,13 @@
       input:focus {
         border-color: var(--primary);
       }
+      /* Remove setas do input number */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
       button {
         padding: 14px 24px;
         background: var(--primary);
@@ -199,7 +216,6 @@
       .btn-opensea {
         background: #2081e2;
       }
-      /* CORREÇÃO: Azul da Base Oficial (#0052ff) */
       .btn-etherscan {
         background: #0052ff;
         color: white;
@@ -208,7 +224,6 @@
         filter: brightness(1.1);
       }
 
-      /* BOTÕES SOCIAIS */
       .social-share {
         display: flex;
         gap: 10px;
@@ -235,16 +250,9 @@
         filter: brightness(1.1);
       }
 
-      .btn-wa {
-        background: #25d366;
-      }
-      .btn-li {
-        background: #0077b5;
-      }
-      .btn-x {
-        background: #000000;
-        border: 1px solid #333;
-      }
+      .btn-wa { background: #25d366; }
+      .btn-li { background: #0077b5; }
+      .btn-x { background: #000000; border: 1px solid #333; }
 
       .loading-btn {
         opacity: 0.7;
@@ -279,22 +287,12 @@
       }
 
       @keyframes shimmer {
-        0% {
-          background-position: 200% 0;
-        }
-        100% {
-          background-position: -200% 0;
-        }
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
       }
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
       }
     </style>
   </head>
@@ -311,11 +309,15 @@
         <p>Oficial SciBound</p>
       </div>
 
-      <div class="search-box">
-        <input type="number" id="diplomaId" placeholder="ID do Diploma" />
-        <button onclick="buscarDiploma()">Verificar</button>
+      <div class="search-container">
+        <div class="search-box">
+          <input type="number" id="diplomaId" placeholder="Digite o ID Numérico (Ex: 5)" />
+          <button onclick="buscarDiploma()">Verificar</button>
+        </div>
+        <p class="search-helper">
+          ℹ️ Use o número identificador (#) que consta na sua carteira ou OpenSea.
+        </p>
       </div>
-
       <div id="loading" style="display: none; padding: 20px">
         <div class="skeleton" style="height: 200px; margin-bottom: 20px"></div>
         <div class="skeleton" style="width: 60%"></div>
@@ -361,6 +363,12 @@
               <span class="label">Conclusão</span>
               <span class="value" id="resData">-</span>
             </div>
+            
+            <div class="info-row">
+              <span class="label">Cód. Validação</span>
+              <span class="value" id="resCodigoVal" style="color: var(--primary)">-</span>
+            </div>
+
             <div class="info-row">
               <span class="label">Owner</span>
               <span
@@ -384,60 +392,27 @@
             </button>
 
             <div class="social-share">
-              <button
-                onclick="compartilharSocial('whatsapp')"
-                class="btn-social btn-wa"
-              >
-                WhatsApp
-              </button>
-              <button
-                onclick="compartilharSocial('linkedin')"
-                class="btn-social btn-li"
-              >
-                LinkedIn
-              </button>
-              <button
-                onclick="compartilharSocial('x')"
-                class="btn-social btn-x"
-              >
-                X
-              </button>
+              <button onclick="compartilharSocial('whatsapp')" class="btn-social btn-wa">WhatsApp</button>
+              <button onclick="compartilharSocial('linkedin')" class="btn-social btn-li">LinkedIn</button>
+              <button onclick="compartilharSocial('x')" class="btn-social btn-x">X</button>
             </div>
 
-            <a
-              id="linkOpenSea"
-              href="#"
-              target="_blank"
-              class="btn-action btn-opensea"
-              >🌊 OpenSea</a
-            >
-            <a
-              id="linkEtherscan"
-              href="#"
-              target="_blank"
-              class="btn-action btn-etherscan"
-              >⛓️ Explorer</a
-            >
+            <a id="linkOpenSea" href="#" target="_blank" class="btn-action btn-opensea">🌊 OpenSea</a>
+            <a id="linkEtherscan" href="#" target="_blank" class="btn-action btn-etherscan">⛓️ Explorer</a>
           </div>
         </div>
       </div>
 
       <div class="footer-note">
         Tecnologia
-        <a href="https://www.letscocreate.com.br/" target="_blank"
-          >Let's CoCreate</a
-        >
+        <a href="https://www.letscocreate.com.br/" target="_blank">Let's CoCreate</a>
         (conforme Portaria MEC nº 70/2025)
       </div>
     </div>
 
     <script>
-      // === CONFIGURAÇÕES ===
-      const LOGO_URL =
-        "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
-      
-      // ⚠️ IMPORTANTE: CONFIRA SE ESTE É O ENDEREÇO DA BASE!
-      const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09";
+      const LOGO_URL = "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
+      const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09"; // Base Mainnet
 
       document.getElementById("headerLogoImg").src = LOGO_URL;
 
@@ -457,17 +432,14 @@
 
       async function buscarDiploma() {
         const id = document.getElementById("diplomaId").value;
-        if (!id) return alert("Digite um ID");
+        if (!id) return alert("Digite um ID numérico válido.");
 
         document.getElementById("status").style.display = "none";
         document.getElementById("resultArea").style.display = "none";
         document.getElementById("loading").style.display = "block";
 
         try {
-          // CORREÇÃO: RPC Oficial da Base Mainnet
-          const provider = new ethers.JsonRpcProvider(
-            "https://mainnet.base.org"
-          );
+          const provider = new ethers.JsonRpcProvider("https://mainnet.base.org");
           const contract = new ethers.Contract(contractAddress, abi, provider);
 
           const owner = await contract.ownerOf(id);
@@ -486,22 +458,17 @@
           document.getElementById("resNome").innerText = nome;
           document.getElementById("resCurso").innerText = getAttr("Curso");
           document.getElementById("resData").innerText = getAttr("Data de Conclusão");
+          
+          // MOSTRAR O CÓDIGO LCC NA TELA PARA CONFERÊNCIA VISUAL
+          document.getElementById("resCodigoVal").innerText = getAttr("Código de Validação");
+          
           document.getElementById("resOwner").innerText = owner;
 
-          const imgUrl = metadata.image.replace(
-            "ipfs://",
-            "https://ipfs.io/ipfs/"
-          );
+          const imgUrl = metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/");
           document.getElementById("resImagem").src = imgUrl;
 
-          // CORREÇÃO: Links Oficiais para Mainnet
-          document.getElementById(
-            "linkOpenSea"
-          ).href = `https://opensea.io/assets/base/${contractAddress}/${id}`;
-          
-          document.getElementById(
-            "linkEtherscan"
-          ).href = `https://basescan.org/token/${contractAddress}?a=${id}`;
+          document.getElementById("linkOpenSea").href = `https://opensea.io/assets/base/${contractAddress}/${id}`;
+          document.getElementById("linkEtherscan").href = `https://basescan.org/token/${contractAddress}?a=${id}`;
 
           document.getElementById("qrcode").innerHTML = "";
           new QRCode(document.getElementById("qrcode"), {
@@ -521,33 +488,23 @@
           document.getElementById("loading").style.display = "none";
           document.getElementById("status").style.display = "block";
           document.getElementById("status").innerText =
-            "❌ Diploma não encontrado ou não emitido na Base.";
+            "❌ Diploma não encontrado. Verifique se o ID é o número correto (ex: 5).";
         }
       }
 
       function compartilharSocial(rede) {
         const id = document.getElementById("diplomaId").value;
         const pageUrl = window.location.href.split("?")[0] + "?id=" + id;
-
-        const texto =
-          "Confira meu certificado verificado em Blockchain pela Let's CoCreate! 🚀🎓";
-
+        const texto = "Confira meu certificado verificado em Blockchain pela Let's CoCreate! 🚀🎓";
         let shareUrl = "";
 
         if (rede === "whatsapp") {
-          shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
-            texto + " " + pageUrl
-          )}`;
+          shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto + " " + pageUrl)}`;
         } else if (rede === "linkedin") {
-          shareUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(
-            texto + " " + pageUrl
-          )}`;
+          shareUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(texto + " " + pageUrl)}`;
         } else if (rede === "x") {
-          shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-            texto
-          )}&url=${encodeURIComponent(pageUrl)}`;
+          shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(texto)}&url=${encodeURIComponent(pageUrl)}`;
         }
-
         window.open(shareUrl, "_blank");
       }
 
@@ -555,14 +512,9 @@
         const btn = document.getElementById("btnPdf");
         btn.innerText = "⏳ Gerando PDF...";
         btn.classList.add("loading-btn");
-
         try {
           const { jsPDF } = window.jspdf;
-          const doc = new jsPDF({
-            orientation: "landscape",
-            unit: "mm",
-            format: "a4",
-          });
+          const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
           const base64Img = await getBase64FromUrl(currentData.imgUrl);
           doc.addImage(base64Img, "JPEG", 0, 0, 297, 210);
           doc.save(`Certificado_LCC_${currentData.id}.pdf`);
