@@ -20,6 +20,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
       :root {
@@ -86,7 +87,7 @@
         font-size: 13px;
         color: #cbd5e1;
       }
-      input {
+      input[type="text"] {
         width: 100%;
         padding: 12px;
         background: #000;
@@ -102,14 +103,42 @@
         border-color: var(--primary);
         box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
       }
-      .input-image input {
-        border-color: #3b82f6;
-        background: rgba(59, 130, 246, 0.05);
+
+      /* === ESTILO NOVO: ÁREA DE UPLOAD === */
+      .upload-zone {
+        border: 2px dashed var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s;
+        background: rgba(255,255,255,0.02);
+        position: relative;
+        overflow: hidden;
       }
-      .input-image input:focus {
-        border-color: #60a5fa;
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+      .upload-zone:hover, .upload-zone.dragover {
+        border-color: var(--primary);
+        background: rgba(34, 211, 238, 0.05);
       }
+      .upload-icon {
+        font-size: 24px;
+        color: var(--primary);
+        margin-bottom: 10px;
+      }
+      .upload-text {
+        font-size: 12px;
+        color: #94a3b8;
+      }
+      .preview-img {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 8px;
+        display: none;
+        margin-top: 10px;
+        border: 1px solid var(--border);
+      }
+      /* Fim estilo upload */
+
       button {
         width: 100%;
         padding: 14px;
@@ -179,16 +208,12 @@
         background: var(--danger);
         color: white;
       }
-
-      /* Mensagem de boas vindas quando desconectado */
       #welcomeMsg {
         text-align: center;
         color: #94a3b8;
         font-size: 14px;
         margin-top: 20px;
       }
-
-      /* Ajuste do botão Web3Modal */
       w3m-button {
         display: block;
         margin: 0 auto;
@@ -215,15 +240,16 @@
       <div id="welcomeMsg">👆 Conecte sua carteira para acessar o painel.</div>
 
       <div id="mainArea" style="display: none">
-        <div class="input-group input-image">
-          <label style="color: #60a5fa">🔗 Link da Imagem do Certificado</label>
-          <input
-            type="text"
-            id="ipfsImageInput"
-            placeholder="Ex: https://gateway.pinata.cloud/ipfs/Qm..."
-          />
+        
+        <div class="input-group">
+          <label>Imagem do Certificado</label>
+          <div class="upload-zone" id="dropZone">
+            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+            <div class="upload-text">Clique ou Arraste o arquivo aqui</div>
+            <input type="file" id="fileInput" accept="image/*" hidden />
+            <img id="imagePreview" class="preview-img" />
+          </div>
         </div>
-
         <div class="input-group">
           <label>Nome do Aluno</label
           ><input type="text" id="nomeAluno" placeholder="Ex: Ana Silva" />
@@ -296,16 +322,10 @@
       } from "https://esm.sh/@web3modal/ethers@4.0.1";
       import { BrowserProvider, Contract } from "https://esm.sh/ethers@6.11.1";
 
-      // === 1. CONFIGURAÇÕES (DEFINIDAS NO INÍCIO) ===
-      const LOGO_URL =
-        "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
-      
-      // ⚠️ IMPORTANTE: CONFIRA SE ESTE É O ENDEREÇO DA BASE!
-      const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09";
-      
+      const LOGO_URL = "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
+      const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09"; // Base Mainnet
       const LINK_VERIFICADOR = "https://scibound.netlify.app/verificar.html";
-
-      const projectId = "ccaa314f20e97669bf6e926f17670656"; // Seu ID
+      const projectId = "ccaa314f20e97669bf6e926f17670656";
 
       const metadata = {
         name: "Emissor CoCreate",
@@ -314,61 +334,85 @@
         icons: [LOGO_URL],
       };
 
-      // === CONFIGURAÇÃO BASE MAINNET (OFICIAL) ===
       const baseMainnet = {
-        chainId: 8453, // ID Oficial da Base
+        chainId: 8453,
         name: "Base",
         currency: "ETH",
         explorerUrl: "https://basescan.org",
         rpcUrl: "https://mainnet.base.org",
       };
 
-      // Configurar interface inicial
       document.getElementById("brandLogoImg").src = LOGO_URL;
-      document.getElementById("codigoValidacao").value =
-        "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+      document.getElementById("codigoValidacao").value = "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
 
-      // === 2. INICIALIZAR WEB3MODAL ===
       const modal = createWeb3Modal({
         ethersConfig: defaultConfig({ metadata }),
-        chains: [baseMainnet], // <--- USANDO BASE MAINNET
+        chains: [baseMainnet],
         projectId,
-        enableAnalytics: true,
-        themeVariables: {
-          "--w3m-accent": "#22d3ee",
-          "--w3m-border-radius-master": "1px",
-        },
+        themeVariables: { "--w3m-accent": "#22d3ee", "--w3m-border-radius-master": "1px" },
       });
 
-      // === 3. MONITORAR CONEXÃO ===
       modal.subscribeProvider(async ({ address, isConnected }) => {
         if (isConnected) {
-          console.log("Conectado:", address);
-          // Mostra o formulário e esconde a msg de boas vindas
           document.getElementById("mainArea").style.display = "block";
           document.getElementById("welcomeMsg").style.display = "none";
-
           notify("✅ Sistema Pronto para Emissão", "success");
         } else {
-          // Esconde formulário, mostra msg de boas vindas
           document.getElementById("mainArea").style.display = "none";
           document.getElementById("welcomeMsg").style.display = "block";
         }
       });
+
+      // === LÓGICA DE UPLOAD (FRONTEND) ===
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+      const imagePreview = document.getElementById('imagePreview');
+      let currentFileBase64 = null; // Armazena a imagem
+
+      // Clique para abrir seletor
+      dropZone.addEventListener('click', () => fileInput.click());
+
+      // Mudança no Input
+      fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+      // Arrastar e Soltar
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        handleFile(e.dataTransfer.files[0]);
+      });
+
+      function handleFile(file) {
+        if (file && file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            currentFileBase64 = e.target.result;
+            imagePreview.src = currentFileBase64;
+            imagePreview.style.display = 'block';
+            document.querySelector('.upload-text').innerText = file.name;
+          };
+          reader.readAsDataURL(file);
+        } else {
+          notify("Por favor, selecione uma imagem válida.", "error");
+        }
+      }
+      // === FIM LÓGICA DE UPLOAD ===
 
       const abi = [
         "function emitirCertificado(address aluno, string memory uri) public",
         "function revogarCertificado(uint256 tokenId, string memory motivo) public",
       ];
 
-      // === 4. FUNÇÕES DE NEGÓCIO ===
       async function getSigner() {
         const walletProvider = modal.getWalletProvider();
-        if (!walletProvider)
-          throw new Error("Carteira não encontrada. Conecte novamente.");
+        if (!walletProvider) throw new Error("Conecte novamente.");
         const provider = new BrowserProvider(walletProvider);
-        const signer = await provider.getSigner();
-        return signer;
+        return await provider.getSigner();
       }
 
       function notify(msg, type) {
@@ -378,40 +422,50 @@
           gravity: "top",
           position: "center",
           style: {
-            background:
-              type === "success"
-                ? "#10B981"
-                : type === "error"
-                ? "#EF4444"
-                : "#3B82F6",
+            background: type === "success" ? "#10B981" : type === "error" ? "#EF4444" : "#3B82F6",
             borderRadius: "10px",
           },
         }).showToast();
       }
 
       async function emitirDiploma() {
-        const ipfsImage = document.getElementById("ipfsImageInput").value;
+        // Validação da imagem
+        if (!currentFileBase64) return notify("⚠️ Faça o upload da imagem do certificado!", "error");
+
         const nome = document.getElementById("nomeAluno").value;
         const curso = document.getElementById("nomeCurso").value;
         const data = document.getElementById("dataColacao").value;
         const wallet = document.getElementById("walletAluno").value;
         const codigo = document.getElementById("codigoValidacao").value;
 
-        if (!ipfsImage || !nome || !wallet)
-          return notify("Preencha todos os campos obrigatórios.", "error");
-
-        notify("⏳ Criando metadados...", "loading");
+        if (!nome || !wallet) return notify("Preencha todos os campos obrigatórios.", "error");
 
         try {
-          // A. Pega Signer
+          // 1. Upload da Imagem para o Pinata (via Netlify Functions)
+          notify("⏳ Enviando imagem para IPFS...", "loading");
+          
+          const imgRes = await fetch("/.netlify/functions/upload-img", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              imageBase64: currentFileBase64,
+              name: `Img_${codigo}`
+            }),
+          });
+
+          if (!imgRes.ok) throw new Error("Erro ao subir imagem.");
+          const imgData = await imgRes.json();
+          const ipfsImageLink = "https://gateway.pinata.cloud/ipfs/" + imgData.IpfsHash;
+
+          // 2. Criação dos Metadados (JSON)
+          notify("⏳ Criando metadados...", "loading");
           const signer = await getSigner();
           const contract = new Contract(contractAddress, abi, signer);
 
-          // B. Monta Metadados
           const metadata = {
             name: `Certificado Let's CoCreate - ${nome}`,
             description: "Certificado Soulbound Token.",
-            image: ipfsImage,
+            image: ipfsImageLink, // Usa o link gerado acima
             external_url: `${LINK_VERIFICADOR}?id=${codigo}`,
             attributes: [
               { trait_type: "Instituição", value: "Let's CoCreate" },
@@ -422,36 +476,21 @@
             ],
           };
 
-          // C. Upload via Backend (Netlify Functions) - SEGURANÇA TOTAL
-          const res = await fetch(
-            "/.netlify/functions/upload", 
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                pinataContent: metadata,
-                pinataMetadata: { name: `Cert_${codigo}.json` },
-              }),
-            }
-          );
+          // 3. Upload dos Metadados (via Netlify Functions)
+          const metaRes = await fetch("/.netlify/functions/upload", {
+             method: "POST",
+             headers: { "Content-Type": "application/json" },
+             body: JSON.stringify({
+               pinataContent: metadata,
+               pinataMetadata: { name: `Cert_${codigo}.json` },
+             }),
+          });
+          
+          if (!metaRes.ok) throw new Error("Erro ao subir metadados.");
+          const metaDataPinata = await metaRes.json();
+          const jsonUri = "ipfs://" + metaDataPinata.IpfsHash;
 
-          // Lógica nova para ler erros corretamente
-          if (!res.ok) {
-             const errData = await res.json();
-             console.error("Detalhes do erro:", errData); 
-             
-             let msgErro = errData.error;
-             if (typeof msgErro === 'object') {
-                 msgErro = JSON.stringify(msgErro);
-             }
-             
-             throw new Error("Falha no servidor: " + (msgErro || res.statusText));
-          }
-
-          const dataPinata = await res.json();
-          const jsonUri = "ipfs://" + dataPinata.IpfsHash;
-
-          // D. Transação
+          // 4. Transação Blockchain
           notify("⏳ Aprove na sua Carteira...", "loading");
           const tx = await contract.emitirCertificado(wallet, jsonUri);
 
@@ -461,12 +500,15 @@
           notify(`🎉 Sucesso! Hash: ${tx.hash.slice(0, 6)}...`, "success");
           confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
 
-          // Gera novo código
-          document.getElementById("codigoValidacao").value =
-            "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+          // Reset
+          document.getElementById("codigoValidacao").value = "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+          document.getElementById("imagePreview").style.display = "none";
+          document.querySelector('.upload-text').innerText = "Clique ou Arraste o arquivo aqui";
+          currentFileBase64 = null;
+          
         } catch (e) {
           console.error(e);
-          notify(e.reason || e.message, "error");
+          notify(e.reason || e.message || "Erro desconhecido", "error");
         }
       }
 
@@ -478,17 +520,13 @@
         try {
           const signer = await getSigner();
           const contract = new Contract(contractAddress, abi, signer);
-
           const tx = await contract.revogarCertificado(id, motivo);
           notify("Revogando...", "loading");
           await tx.wait();
           notify("Token Queimado 🔥", "success");
-        } catch (e) {
-          notify(e.message, "error");
-        }
+        } catch (e) { notify(e.message, "error"); }
       }
 
-      // === 5. EXPOR FUNÇÕES PARA O HTML ===
       window.emitirDiploma = emitirDiploma;
       window.revogarDiploma = revogarDiploma;
     </script>
