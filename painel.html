@@ -5,21 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Painel do Emissor | Let's CoCreate</title>
 
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
-    />
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/toastify-js"
-    ></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
@@ -87,7 +76,7 @@
         font-size: 13px;
         color: #cbd5e1;
       }
-      input[type="text"] {
+      input[type="text"], input[type="number"] {
         width: 100%;
         padding: 12px;
         background: #000;
@@ -104,7 +93,7 @@
         box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
       }
 
-      /* === ESTILO NOVO: ÁREA DE UPLOAD === */
+      /* === ESTILO: ÁREA DE UPLOAD (Drag & Drop) === */
       .upload-zone {
         border: 2px dashed var(--border);
         border-radius: 12px;
@@ -137,8 +126,8 @@
         margin-top: 10px;
         border: 1px solid var(--border);
       }
-      /* Fim estilo upload */
 
+      /* Botões */
       button {
         width: 100%;
         padding: 14px;
@@ -184,6 +173,8 @@
         color: #64748b;
         text-decoration: none;
       }
+      
+      /* Revogação */
       details {
         margin-top: 30px;
         border-top: 1px solid var(--border);
@@ -208,6 +199,7 @@
         background: var(--danger);
         color: white;
       }
+      
       #welcomeMsg {
         text-align: center;
         color: #94a3b8;
@@ -223,13 +215,7 @@
   <body>
     <div class="dashboard">
       <div class="brand">
-        <img
-          id="brandLogoImg"
-          class="brand-logo"
-          src=""
-          alt=""
-          crossorigin="anonymous"
-        />
+        <img id="brandLogoImg" class="brand-logo" src="" alt="" crossorigin="anonymous" />
         <span> SciBound | Soulbound Tokens </span>
       </div>
 
@@ -250,37 +236,40 @@
             <img id="imagePreview" class="preview-img" />
           </div>
         </div>
+
         <div class="input-group">
-          <label>Nome do Aluno</label
-          ><input type="text" id="nomeAluno" placeholder="Ex: Ana Silva" />
+          <label>Nome do Aluno</label>
+          <input type="text" id="nomeAluno" placeholder="Ex: Ana Silva" />
         </div>
         <div class="input-group">
-          <label>Curso</label
-          ><input
-            type="text"
-            id="nomeCurso"
-            placeholder="Ex: Blockchain Specialist"
-          />
+          <label>Curso</label>
+          <input type="text" id="nomeCurso" placeholder="Ex: Blockchain Specialist" />
         </div>
         <div class="input-group">
-          <label>Data de Conclusão</label
-          ><input
-            type="text"
-            id="dataColacao"
-            placeholder="Ex: 18 de dezembro de 2025"
-          />
+          <label>Data de Conclusão</label>
+          <input type="text" id="dataColacao" placeholder="Ex: 18 de dezembro de 2025" />
         </div>
         <div class="input-group">
-          <label>Carteira do aluno (0x...)</label
-          ><input type="text" id="walletAluno" placeholder="Endereço público" />
+          <label>Carteira do aluno (0x...)</label>
+          <input type="text" id="walletAluno" placeholder="Endereço público" />
         </div>
+
         <div class="input-group">
-          <label>Código Validação</label
-          ><input
-            type="text"
-            id="codigoValidacao"
-            placeholder="Gerado ao emitir"
-          />
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label>Código de Validação (ou Matrícula)</label>
+            <span 
+              onclick="gerarCodigoAleatorio()" 
+              style="font-size: 11px; color: var(--primary); cursor: pointer; text-decoration: underline;"
+            >
+              🔄 Gerar Aleatório
+            </span>
+          </div>
+          <input type="text" id="codigoValidacao" placeholder="Ex: RA-2026-B" />
+          <p style="font-size: 11px; color: #64748b; margin: 5px 0 0 0; line-height: 1.4;">
+            ℹ️ Identificador único deste documento (Ex: RA, Matrícula ou Protocolo). 
+            Use o gerado automaticamente ou digite o seu padrão interno. 
+            <strong>Não use códigos repetidos.</strong>
+          </p>
         </div>
 
         <button onclick="emitirDiploma()">✨ Registrar na Blockchain</button>
@@ -288,42 +277,28 @@
         <details>
           <summary>⚠️ Opções de Revogação</summary>
           <div style="margin-top: 10px">
-            <input
-              type="number"
-              id="idRevogar"
-              placeholder="ID do Token"
-              style="margin-bottom: 5px"
-            />
+            <input type="number" id="idRevogar" placeholder="ID do Token" style="margin-bottom: 5px" />
             <input type="text" id="motivoRevogar" placeholder="Motivo" />
-            <button class="btn-revoke" onclick="revogarDiploma()">
-              Revogar Permanentemente
-            </button>
+            <button class="btn-revoke" onclick="revogarDiploma()">Revogar Permanentemente</button>
           </div>
         </details>
       </div>
 
-      <a href="verificar.html" target="_blank" class="btn-link"
-        >🔍 Verificador de Certificados</a
-      >
+      <a href="verificar.html" target="_blank" class="btn-link">🔍 Verificador de Certificados</a>
 
       <div class="footer-note">
-        Tecnologia
-        <a href="https://www.letscocreate.com.br/" target="_blank"
-          >Let's CoCreate</a
-        >
+        Tecnologia <a href="https://www.letscocreate.com.br/" target="_blank">Let's CoCreate</a>
         (conforme Portaria MEC nº 70/2025).
       </div>
     </div>
 
     <script type="module">
-      import {
-        createWeb3Modal,
-        defaultConfig,
-      } from "https://esm.sh/@web3modal/ethers@4.0.1";
+      import { createWeb3Modal, defaultConfig } from "https://esm.sh/@web3modal/ethers@4.0.1";
       import { BrowserProvider, Contract } from "https://esm.sh/ethers@6.11.1";
 
       const LOGO_URL = "https://salmon-blank-anaconda-377.mypinata.cloud/ipfs/bafkreibzuryiyn54v4ji6gtfzo3grpz3rzgrwa5cqbysujssv5gp5q4gxi";
-      const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09"; // Base Mainnet
+      // Endereço Base Mainnet
+      const contractAddress = "0x35670719542F0430cB8d9abbcE97fAc1FcfebE09"; 
       const LINK_VERIFICADOR = "https://scibound.netlify.app/verificar.html";
       const projectId = "ccaa314f20e97669bf6e926f17670656";
 
@@ -343,8 +318,33 @@
       };
 
       document.getElementById("brandLogoImg").src = LOGO_URL;
-      document.getElementById("codigoValidacao").value = "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+      
+      // Função Auxiliar de Notificação
+      function notify(msg, type) {
+        Toastify({
+          text: msg,
+          duration: 4000,
+          gravity: "top",
+          position: "center",
+          style: {
+            background: type === "success" ? "#10B981" : type === "error" ? "#EF4444" : "#3B82F6",
+            borderRadius: "10px",
+          },
+        }).showToast();
+      }
 
+      // Função para Gerar Código Aleatório
+      window.gerarCodigoAleatorio = function() {
+        const novoCod = "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+        document.getElementById("codigoValidacao").value = novoCod;
+        if(document.getElementById("mainArea").style.display === "block") {
+            notify("Novo código gerado!", "success");
+        }
+      }
+      // Gera um inicial ao carregar
+      window.gerarCodigoAleatorio();
+
+      // Configuração Web3Modal
       const modal = createWeb3Modal({
         ethersConfig: defaultConfig({ metadata }),
         chains: [baseMainnet],
@@ -363,19 +363,15 @@
         }
       });
 
-      // === LÓGICA DE UPLOAD (FRONTEND) ===
+      // === LÓGICA DE UPLOAD (DRAG & DROP) ===
       const dropZone = document.getElementById('dropZone');
       const fileInput = document.getElementById('fileInput');
       const imagePreview = document.getElementById('imagePreview');
-      let currentFileBase64 = null; // Armazena a imagem
+      let currentFileBase64 = null;
 
-      // Clique para abrir seletor
       dropZone.addEventListener('click', () => fileInput.click());
-
-      // Mudança no Input
       fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
 
-      // Arrastar e Soltar
       dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
         dropZone.classList.add('dragover');
@@ -401,7 +397,6 @@
           notify("Por favor, selecione uma imagem válida.", "error");
         }
       }
-      // === FIM LÓGICA DE UPLOAD ===
 
       const abi = [
         "function emitirCertificado(address aluno, string memory uri) public",
@@ -415,21 +410,7 @@
         return await provider.getSigner();
       }
 
-      function notify(msg, type) {
-        Toastify({
-          text: msg,
-          duration: 4000,
-          gravity: "top",
-          position: "center",
-          style: {
-            background: type === "success" ? "#10B981" : type === "error" ? "#EF4444" : "#3B82F6",
-            borderRadius: "10px",
-          },
-        }).showToast();
-      }
-
       async function emitirDiploma() {
-        // Validação da imagem
         if (!currentFileBase64) return notify("⚠️ Faça o upload da imagem do certificado!", "error");
 
         const nome = document.getElementById("nomeAluno").value;
@@ -438,10 +419,10 @@
         const wallet = document.getElementById("walletAluno").value;
         const codigo = document.getElementById("codigoValidacao").value;
 
-        if (!nome || !wallet) return notify("Preencha todos os campos obrigatórios.", "error");
+        if (!nome || !wallet || !codigo) return notify("Preencha todos os campos obrigatórios.", "error");
 
         try {
-          // 1. Upload da Imagem para o Pinata (via Netlify Functions)
+          // 1. Upload da Imagem (Via Netlify Functions)
           notify("⏳ Enviando imagem para IPFS...", "loading");
           
           const imgRes = await fetch("/.netlify/functions/upload-img", {
@@ -453,11 +434,14 @@
             }),
           });
 
-          if (!imgRes.ok) throw new Error("Erro ao subir imagem.");
+          if (!imgRes.ok) {
+            const err = await imgRes.json();
+            throw new Error(err.error || "Erro ao subir imagem.");
+          }
           const imgData = await imgRes.json();
           const ipfsImageLink = "https://gateway.pinata.cloud/ipfs/" + imgData.IpfsHash;
 
-          // 2. Criação dos Metadados (JSON)
+          // 2. Metadados
           notify("⏳ Criando metadados...", "loading");
           const signer = await getSigner();
           const contract = new Contract(contractAddress, abi, signer);
@@ -465,8 +449,8 @@
           const metadata = {
             name: `Certificado Let's CoCreate - ${nome}`,
             description: "Certificado Soulbound Token.",
-            image: ipfsImageLink, // Usa o link gerado acima
-            external_url: LINK_VERIFICADOR,
+            image: ipfsImageLink, 
+            external_url: LINK_VERIFICADOR, // LINK FIXO (Sem ID) para não quebrar
             attributes: [
               { trait_type: "Instituição", value: "Let's CoCreate" },
               { trait_type: "Estudante", value: nome },
@@ -476,7 +460,7 @@
             ],
           };
 
-          // 3. Upload dos Metadados (via Netlify Functions)
+          // 3. Upload JSON
           const metaRes = await fetch("/.netlify/functions/upload", {
              method: "POST",
              headers: { "Content-Type": "application/json" },
@@ -490,7 +474,7 @@
           const metaDataPinata = await metaRes.json();
           const jsonUri = "ipfs://" + metaDataPinata.IpfsHash;
 
-          // 4. Transação Blockchain
+          // 4. Transação
           notify("⏳ Aprove na sua Carteira...", "loading");
           const tx = await contract.emitirCertificado(wallet, jsonUri);
 
@@ -500,9 +484,10 @@
           notify(`🎉 Sucesso! Hash: ${tx.hash.slice(0, 6)}...`, "success");
           confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
 
-          // Reset
-          document.getElementById("codigoValidacao").value = "LCC-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+          // Reset do Form
+          window.gerarCodigoAleatorio();
           document.getElementById("imagePreview").style.display = "none";
+          document.getElementById("imagePreview").src = "";
           document.querySelector('.upload-text').innerText = "Clique ou Arraste o arquivo aqui";
           currentFileBase64 = null;
           
